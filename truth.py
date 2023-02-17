@@ -37,7 +37,13 @@ labels = ["genParticles"]
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
-
+c1 = ROOT.TCanvas('c1','Transverse Momentum')
+bins = 55
+xmin = 0
+xmax = 1e-04
+h1 = ROOT.TH1F('h1','PTgluglu; p_T(~g~g) [GeV]; Events',bins,xmin,xmax)
+h1.SetStats(False)
+myFile = ROOT.TFile.Open("file.root", "RECREATE")
 # loop over events
 for ievent,event in enumerate(events):
     # use getByLabel, just like in cmsRun
@@ -49,9 +55,21 @@ for ievent,event in enumerate(events):
 
     if ievent%1==0:
         print ("------------------Event", ievent)
+    gluinop4list = []
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
         if abs(pdgid)!=1000021:
             continue
+        if status !=23:
+            continue
         print(status, pdgid)
+        gluinop4list.append(genpart.p4())
+    gluglu = gluinop4list[0]+gluinop4list[1]
+    h1.Fill(gluglu.Pt())
+    print(gluinop4list[0].E(), gluinop4list[1].E())
+h1.Draw()
+myFile.WriteObject(h1, "MyObject")
+myFile = ROOT.TFile.Open("file.root")
+h1 = myFile.MyObject
+c1.SaveAs("c1.pdf")
