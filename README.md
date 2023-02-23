@@ -4,6 +4,15 @@
 
 * example MadGraph samples
 	* https://cmsweb.cern.ch/das/request?instance=prod/global&input=file+dataset%3D%2FSMS-T1btbt-LLC1_ctau10to200-mGluino-1000to2800-mLSP0to2800_TuneCP2_13TeV-madgraphMLM-pythia8%2FRunIIFall17FSPremix-GridpackScan_94X_mc2017_realistic_v15-v1%2FAODSIM
+
+From Sara F:
+
+> here some MG gluino samples
+> https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=%2FSMS-T5qqqqWH_TuneCP5_13TeV-madgraphMLM-pythia8%2FRunIISummer20UL*MiniAODv2*%2FMINIAODSIM
+> and here some stops samples
+> https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=%2FSMS-T6ttZH_TuneCP5_13TeV-madgraphMLM-pythia8%2FRunIIS*MiniAODv*%2FMINIAODSIM
+
+
 * Our Pythia samples
 	* https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FHSCP*%2FRunIISummer20UL18RECO-106X*%2FAODSIM
 
