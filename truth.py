@@ -10,6 +10,9 @@ from DataFormats.FWLite import Events, Handle
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('python')
 options.parseArguments()
+inputFiles = sys.argv[1]
+#options.register ('outputFiles',sys.argv[2],options.multiplicity.singleton,options.varType.string)
+outputFile = sys.argv[2]
 
 # Events takes either
 # - single file name
@@ -17,7 +20,7 @@ options.parseArguments()
 # - VarParsing options
 
 # use Varparsing object
-events = Events ("/afs/cern.ch/user/l/leejr/work/public/ISRStudy/sampleFiles/176F47D3-A514-454B-82D4-019163A330F9.root")
+events = Events (inputFiles)
 
 
 # -bash-4.2$ edmDumpEventContent ../sampleFiles/176F47D3-A514-454B-82D4-019163A330F9.root
@@ -70,6 +73,6 @@ for ievent,event in enumerate(events):
     print(gluinop4list[0].E(), gluinop4list[1].E())
 h1.Draw()
 myFile.WriteObject(h1, "MyObject")
-myFile = ROOT.TFile.Open("file.root")
+myFile = ROOT.TFile.Open(outputFile+".root")
 h1 = myFile.MyObject
-c1.SaveAs("c1.pdf")
+c1.SaveAs(outputFile+".pdf")
