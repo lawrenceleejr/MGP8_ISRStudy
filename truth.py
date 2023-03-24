@@ -5,14 +5,18 @@ import ROOT
 import sys
 from DataFormats.FWLite import Events, Handle
 
+#Take arguments from command line
+#Put "root://cmsxrootd.fnal.gov//" before file name
+#inputFiles = sys.argv[1]
+#outputFile = sys.argv[2]
+
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('python')
 options.parseArguments()
-inputFiles = sys.argv[1]
-#options.register ('outputFiles',sys.argv[2],options.multiplicity.singleton,options.varType.string)
-outputFile = sys.argv[2]
+options.outputFile = '/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/'+sys.argv[2]
+outputFilename = sys.argv[2].replace('outputFile=','')
 
 # Events takes either
 # - single file name
@@ -20,8 +24,8 @@ outputFile = sys.argv[2]
 # - VarParsing options
 
 # use Varparsing object
-events = Events (inputFiles)
-
+#events = Events ("root://cmsxrootd.fnal.gov//" + inputFiles)
+events = Events (options)
 
 # -bash-4.2$ edmDumpEventContent ../sampleFiles/176F47D3-A514-454B-82D4-019163A330F9.root
 # vector<reco::GenParticle>             "genParticles"              ""                "DIGI2RAW"
@@ -44,9 +48,11 @@ c1 = ROOT.TCanvas('c1','Transverse Momentum')
 bins = 55
 xmin = 0
 xmax = 1e-04
-h1 = ROOT.TH1F('h1','PTgluglu; p_T(~g~g) [GeV]; Events',bins,xmin,xmax)
+h1 = ROOT.TH1F('h1','Transverse Momentum of the Digluino System;x; Events',bins,xmin,xmax)
+h1.GetXaxis().SetTitle('P_{T}(#tilde{g}#tilde{g}) [GeV]')
 h1.SetStats(False)
-myFile = ROOT.TFile.Open("file.root", "RECREATE")
+#myFile = ROOT.TFile.Open(outputFile+".root", "RECREATE")
+myFile = ROOT.TFile.Open(outputFilename+".root", "RECREATE")
 # loop over events
 for ievent,event in enumerate(events):
     # use getByLabel, just like in cmsRun
@@ -73,6 +79,5 @@ for ievent,event in enumerate(events):
     print(gluinop4list[0].E(), gluinop4list[1].E())
 h1.Draw()
 myFile.WriteObject(h1, "MyObject")
-myFile = ROOT.TFile.Open(outputFile+".root")
-h1 = myFile.MyObject
-c1.SaveAs(outputFile+".pdf")
+myFile = ROOT.TFile.Open(outputFilename+".root")
+c1.SaveAs(outputFilename+".pdf")
