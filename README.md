@@ -44,5 +44,12 @@ scram b -j
 
 Then you'll be able to run the `truth.py` example skeleton file from this repo.
 
+The syntax for `truth.py` looks like this
 
+python truth.py inputFiles_load=batch_of_files.list outputFile=dir/name_PYTHIA.root outputFilename=name_PYTHIA isAOD=True targetMass=100
 
+You can instead opt to hand `truth.py` a single ROOT file by using 'inputFiles' rather than 'inputFiles_load'
+
+isAOD takes a boolean and will change the status between 22 and 23 based on if the samples are AOD or MINIAOD
+
+targetMass takes an int and refers to the mass of an individual particle in an event
