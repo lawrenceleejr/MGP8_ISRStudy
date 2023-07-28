@@ -71,12 +71,15 @@ ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root", "RECREATE")
 c1 = ROOT.TCanvas('c1','')
+pT = ROOT.TH1F('di-glu pT','Transverse Momentum of Di-gluino sytem',100,0,targetMass*1.5)
 pT1 = ROOT.TH1F('pT1','Transverse Momentum of Stop 1;x; Events',100,0,targetMass*1.5)
 pT2 = ROOT.TH1F('pT2','Transverse Momentum of Stop 2;x; Events',100,0,targetMass*1.5)
 pT1.GetXaxis().SetTitle('P_{T}(#tilde{t}1) [GeV]')
 pT1.SetStats(False)
 pT2.GetXaxis().SetTitle('P_{T}(#tilde{t}2) [GeV]')
 pT2.SetStats(False)
+pT.GetXaxis().SetTitle('P_{T} [GeV]')
+pT.SetStats(False)
 Phi1 = ROOT.TH1F('Phi1','Phi of Stop 1;x; Events',100,-1*ROOT.TMath.Pi(),ROOT.TMath.Pi())
 Phi2 = ROOT.TH1F('Phi2','Phi of Stop 2;x; Events',100,-1*ROOT.TMath.Pi(),ROOT.TMath.Pi())
 Phi1.GetXaxis().SetTitle('#phi(#tilde{t}1)')
@@ -133,9 +136,12 @@ for ievent,event in enumerate(events):
             filteredCount += 1
             continue
         if doPrint:
-            print(status, pdgid, children(genpart))
+            print(status, pdgid)
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
+	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
+	pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt())
+	#print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
         Phi1.Fill(gluinop4list[0].Phi())
