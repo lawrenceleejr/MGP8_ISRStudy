@@ -25,10 +25,13 @@ options.maxEvents = -1
 options.parseArguments()
 outputFilename = options.outputFilename
 targetMass = options.targetMass
-if options.isAOD:
-    targetStatus = 23
-else:
-    targetStatus = 22
+#if options.isAOD:
+#   targetStatus = 23
+#   targetStatus = 102
+#else:
+#    targetStatus = 22
+targetStatus = 102
+
 outputfile = ROOT.TFile(options.outputFile, 'RECREATE')
 
 debug = False
@@ -116,12 +119,13 @@ for ievent,event in enumerate(events):
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
+
         mass = -1
         if options.isAOD:
             mass = genpart.mass()
         else:
             mass = genpart.mass()
-        if abs(pdgid)!=1000006:
+        if abs(pdgid)!=1000021:
             continue
         if status != targetStatus:
             continue
@@ -129,7 +133,7 @@ for ievent,event in enumerate(events):
             filteredCount += 1
             continue
         if doPrint:
-            print(status, pdgid)
+            print(status, pdgid, children(genpart))
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
         pT1.Fill(gluinop4list[0].Pt())
