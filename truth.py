@@ -32,13 +32,13 @@ targetMass = options.targetMass
 #    targetStatus = 22
 targetStatus = 102
 
-outputfile = ROOT.TFile(options.outputFile, 'RECREATE')
+outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
 debug = False
 doPrint=False
 print("input=",options.inputFiles)
-print("output=",options.outputFile)
-print(outputFilename, targetMass)
+print("output=",outputFile)
+print(options.outputFilename, targetMass)
 
 
 # Events takes either
@@ -165,8 +165,8 @@ for ievent,event in enumerate(events):
 #c1.SaveAs(output_path)
 #myFile.WriteObject(h1, "LowGeV")
 #myFile.WriteObject(h2, "HighGeV")
-outputfile.Write()
-outputfile.Close()
+outputFile.Write()
+outputFile.Close()
 #myFile.Write()
 #myFile.Close()
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
