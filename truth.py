@@ -21,20 +21,21 @@ options.register ('outputFilename','',VarParsing.multiplicity.singleton, VarPars
 options.register ('targetMass','',VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetMass")
 options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.varType.bool, "isAOD")
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
+options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
 options.parseArguments()
 outputFilename = options.outputFilename
 targetMass = options.targetMass
-#if options.isAOD:
+#if !options.isAOD:
 #   targetStatus = 23
 #   targetStatus = 102
 #else:
 #    targetStatus = 22
-targetStatus = 102
+targetStatus = options.targetStatus
 
 outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
-debug = False
+#debug = 
 doPrint=False
 print("input=",options.inputFiles)
 print("output=",outputFile)
@@ -122,7 +123,7 @@ for ievent,event in enumerate(events):
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
-
+	
         mass = -1
         if options.isAOD:
             mass = genpart.mass()
@@ -130,13 +131,13 @@ for ievent,event in enumerate(events):
             mass = genpart.mass()
         if abs(pdgid)!=1000021:
             continue
-        if status != targetStatus:
+        if doPrint:
+		print(status, pdgid)
+	if status != targetStatus:
             continue
         if abs(targetMass-mass) >= targetMass*0.1:
             filteredCount += 1
             continue
-        if doPrint:
-            print(status, pdgid)
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
 	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
