@@ -1,8 +1,8 @@
 #! /usr/bin/sh
 
 cmsenv
-
-echo "Running 'kinit -l 24h0m"
+echo "If running with screen, please ensure you log back into the same node on lxplus."
+echo "Running 'kinit -l 24h0m'"
 kinit -l 24h0m
 echo "Running 'voms-proxy-init -voms cms'."
 voms-proxy-init -voms cm
