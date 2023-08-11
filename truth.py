@@ -72,7 +72,7 @@ ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root", "RECREATE")
 c1 = ROOT.TCanvas('c1','')
-pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int((targetMass*1.5)/50),0,targetMass*1.5)
+pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
 pT1 = ROOT.TH1F('pT1','Transverse Momentum of Stop 1;x; Events',100,0,targetMass*1.5)
 pT2 = ROOT.TH1F('pT2','Transverse Momentum of Stop 2;x; Events',100,0,targetMass*1.5)
 pT1.GetXaxis().SetTitle('P_{T}(#tilde{t}1) [GeV]')
