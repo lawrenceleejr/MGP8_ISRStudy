@@ -2,7 +2,11 @@
 
 cmsenv
 
-echo "Please ensure you have run 'voms-proxy-init -voms cms' prior to continuing this script."
+echo "Running 'kinit -l 24h0m"
+kinit -l 24h0m
+echo "Running 'voms-proxy-init -voms cms'."
+voms-proxy-init -voms cm
+
 echo "Print every how many lines?"
 read numLines
 echo "Printing every $numLines lines."
