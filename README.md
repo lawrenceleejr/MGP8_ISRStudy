@@ -54,6 +54,7 @@ isAOD takes a boolean and will change the status between 22 and 23 based on if t
 
 targetMass takes an int and refers to the mass of an individual particle in an event
 
+
 **Instructions for generating .list files to pass to truth.py**
 
 Once path to the dataset has been found from DAS, this command will generate the .list with the entries in the appropriate format.
@@ -62,6 +63,7 @@ Once path to the dataset has been found from DAS, this command will generate the
 
 The .list can then be passed to truth.py with the ```inputFiles_load``` command as outlined above.
 
+
 **Helpful tips when running truth.py**
 
 It may be useful to record the output of truth.py while also observing the output in the terminal. Rather than redirecting the output stream with ```>```, consider using ```tee```. Example:
@@ -69,3 +71,7 @@ It may be useful to record the output of truth.py while also observing the outpu
 ```python truth.py inputFiles_load='<path>/<filename>.list' outputFilename='<path>/<output_filename>.root' targetMass=200 isAOD=False printEvery=10000 2>&1 | tee <log filename>.txt```
 
 Note that this will overwrite the log.txt if run again. This is generally desireable, but you can append to an exisiting file by adding the ```-a``` flag to ```tee```. ```2>&1``` Ensures that the error outputstream is passed to ```tee``` so that any error output is recorded in the log. 
+
+When passing Madgraph samples to truth.py, the target status must be given as a flag. Example: 
+
+```python truth.py inputFiles_load='<path>/<input-list>.list' outputFilename='<path>/<output-filename>.root' targetMass=1000 isAOD=False printEvery=1000 targetStatus=62 2>&1 | tee <path>/<log-filename>.txt```
