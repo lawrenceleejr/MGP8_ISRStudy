@@ -148,6 +148,7 @@ generator.processFile = cms.untracked.string(PROCESS_FILE)
 generator.pdtFile = cms.FileInPath(PDT_FILE)
 generator.useregge = cms.bool(USE_REGGE)
 
+#We would like to change the particleID lists to be more inclusive of all RHadrons.
 dirhadrongenfilter = cms.EDFilter("MCParticlePairFilter",
     Status = cms.untracked.vint32(1, 1),
     MinPt = cms.untracked.vdouble(0., 0.),
