@@ -103,6 +103,9 @@ Mass2.SetStats(False)
 
 filteredCount = 0
 #set to -1 for all events
+
+#Add for loop here over events
+
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
@@ -140,9 +143,9 @@ for ievent,event in enumerate(events):
             continue
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
-	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-	pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt())
-	#print('Di-gluino pt', test)
+        #print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
+        pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt()) #Add weights here, fill takes parameters (value, weight)
+        #print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
         Phi1.Fill(gluinop4list[0].Phi())
