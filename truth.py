@@ -141,7 +141,7 @@ for ievent,event in enumerate(events):
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
 	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-	pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt())
+	pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt()) #wombo test
 	#print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
