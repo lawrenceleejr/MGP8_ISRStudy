@@ -6,10 +6,10 @@ import sys
 import os
 from DataFormats.FWLite import Events, Handle
 
-#Take arguments from command line
-#Put "root://cmsxrootd.fnal.gov//" before file name
-#inputFiles = sys.argv[1]
-#outputFile = sys.argv[2]
+# Take arguments from command line
+# Put "root://cmsxrootd.fnal.gov//" before file name
+# inputFiles = sys.argv[1]
+# outputFile = sys.argv[2]
 
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
@@ -48,7 +48,7 @@ print(options.outputFilename, targetMass)
 # - VarParsing options
 
 # use Varparsing object
-events = Events (options)
+events = Events(options)
 
 # -bash-4.2$ edmDumpEventContent ../sampleFiles/176F47D3-A514-454B-82D4-019163A330F9.root
 # vector<reco::GenParticle>             "genParticles"              ""                "DIGI2RAW"
@@ -65,22 +65,25 @@ handles[genparticleLabel]  = Handle ("std::vector<reco::GenParticle>")
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
 
-
+# Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
+n_weights = 10
+h_gluglu_pT_dict = {}
+for i in range(n_weights):
+    h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}','Transverse Momentum of Di-gluino system'.format(i),int(2800/50),0,2800)
+    h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
+    h_gluglu_pT_dict[i].SetStats(False)
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root", "RECREATE")
 c1 = ROOT.TCanvas('c1','')
-pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
 pT1 = ROOT.TH1F('pT1','Transverse Momentum of Stop 1;x; Events',100,0,targetMass*1.5)
 pT2 = ROOT.TH1F('pT2','Transverse Momentum of Stop 2;x; Events',100,0,targetMass*1.5)
 pT1.GetXaxis().SetTitle('P_{T}(#tilde{t}1) [GeV]')
 pT1.SetStats(False)
 pT2.GetXaxis().SetTitle('P_{T}(#tilde{t}2) [GeV]')
 pT2.SetStats(False)
-pT.GetXaxis().SetTitle('P_{T} [GeV]')
-pT.SetStats(False)
 Phi1 = ROOT.TH1F('Phi1','Phi of Stop 1;x; Events',100,-1*ROOT.TMath.Pi(),ROOT.TMath.Pi())
 Phi2 = ROOT.TH1F('Phi2','Phi of Stop 2;x; Events',100,-1*ROOT.TMath.Pi(),ROOT.TMath.Pi())
 Phi1.GetXaxis().SetTitle('#phi(#tilde{t}1)')
@@ -104,8 +107,6 @@ Mass2.SetStats(False)
 filteredCount = 0
 #set to -1 for all events
 
-#Add for loop here over events
-
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
@@ -126,26 +127,27 @@ for ievent,event in enumerate(events):
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
-	
+
         mass = -1
         if options.isAOD:
             mass = genpart.mass()
         else:
             mass = genpart.mass()
-        if abs(pdgid)!=1000021:
+        if abs(pdgid) != 1000021:
             continue
-        #if doPrint:
-		#print(status, pdgid)
-	if status != targetStatus:
+        # if doPrint:
+        # #print(status, pdgid)
+        if status != targetStatus:
             continue
         if abs(targetMass-mass) >= targetMass*0.1:
             filteredCount += 1
             continue
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
-        #print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-        pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt()) #Add weights here, fill takes parameters (value, weight)
-        #print('Di-gluino pt', test)
+        # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
+        for i, weights, in enumerate(event.weights()):
+            h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weights)
+        # print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
         Phi1.Fill(gluinop4list[0].Phi())
@@ -163,15 +165,15 @@ for ievent,event in enumerate(events):
             print("List is empty.")
     
 
-#output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_LowGeV'+".pdf")
-#c1.SaveAs(output_path)
-#output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_HighGeV'+".pdf")
-#c1.SaveAs(output_path)
-#myFile.WriteObject(h1, "LowGeV")
-#myFile.WriteObject(h2, "HighGeV")
+# output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_LowGeV'+".pdf")
+# c1.SaveAs(output_path)
+# output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_HighGeV'+".pdf")
+# c1.SaveAs(output_path)
+# myFile.WriteObject(h1, "LowGeV")
+# myFile.WriteObject(h2, "HighGeV")
 outputFile.Write()
 outputFile.Close()
-#myFile.Write()
-#myFile.Close()
-#myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
+# myFile.Write()
+# myFile.Close()
+# myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
 print("\n\nEND")
