@@ -56,11 +56,13 @@ events = Events(options)
 
 
 genparticleLabel = "prunedGenParticles"
+eventinfoLabel = "eventInfo"
 if options.isAOD :
     genparticleLabel = "genParticles"
 # create handle outside of loop
 handles = {}
-handles[genparticleLabel]  = Handle ("std::vector<reco::GenParticle>")
+handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
+handles[eventinfoLabel] = Handle("std::vector<reco::GenEventInfoProduct>")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
@@ -120,6 +122,7 @@ for ievent,event in enumerate(events):
 
     # get the product
     genparticles = handles[genparticleLabel].product()
+    eventinfo = handles[eventinfoLabel].product()
 
     if doPrint:
         print ("------------------Event", ievent)
@@ -145,7 +148,7 @@ for ievent,event in enumerate(events):
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-        for i, weights, in enumerate(event.weights()):
+        for i, weights, in enumerate(eventinfo.weights()):
             h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weights)
         # print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
