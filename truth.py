@@ -56,13 +56,13 @@ events = Events(options)
 
 
 genparticleLabel = "prunedGenParticles"
-eventinfoLabel = "eventInfo"
+eventinfoLabel = "generator"
 if options.isAOD :
     genparticleLabel = "genParticles"
 # create handle outside of loop
 handles = {}
 handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
-handles[eventinfoLabel] = Handle("GenEventInfoProduct")
+handles["generator"] = Handle("GenEventInfoProduct")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
@@ -122,7 +122,7 @@ for ievent,event in enumerate(events):
 
     # get the product
     genparticles = handles[genparticleLabel].product()
-    eventinfo = handles[eventinfoLabel].product()
+    eventinfo = handles["generator"].product()
 
     if doPrint:
         print ("------------------Event", ievent)
