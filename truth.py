@@ -62,7 +62,7 @@ if options.isAOD :
 # create handle outside of loop
 handles = {}
 handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
-handles[eventinfoLabel] = Handle("std::vector<reco::GenEventInfoProduct>")
+handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
