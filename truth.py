@@ -73,7 +73,7 @@ h_gluglu_pT_dict = {}
 for i in range(n_weights):
     h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}','Transverse Momentum of Di-gluino system'.format(i),int(2800/50),0,2800)
     h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
-    h_gluglu_pT_dict[i].SetStats(False)
+    h_gluglu_pT_dict[i].Sumw2()
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
