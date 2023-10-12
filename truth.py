@@ -152,7 +152,6 @@ for ievent,event in enumerate(events):
         gluinop4list.append(genpart.p4())
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-        print("Number of weights in event = {}".format(len(eventinfo.weights())))
         for i, weight, in enumerate(eventinfo.weights()):
             h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weight)
         # print('Di-gluino pt', test)
