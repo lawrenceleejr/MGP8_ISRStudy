@@ -11,6 +11,9 @@ from DataFormats.FWLite import Events, Handle
 # inputFiles = sys.argv[1]
 # outputFile = sys.argv[2]
 
+# Current best run command
+# python truth.py inputFiles_load=input-files/MGgluino2018_n50.list outputFilename=Real_01__MG.root targetMass=1000 isAOD=False printEvery=1000 targetStatus=62
+
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -68,7 +71,7 @@ handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 # like and edm::InputTag
 
 # Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
-n_weights = 10
+n_weights = 45
 h_gluglu_pT_dict = {}
 for i in range(n_weights):
     h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}','Transverse Momentum of Di-gluino system'.format(i),int(2800/50),0,2800)
