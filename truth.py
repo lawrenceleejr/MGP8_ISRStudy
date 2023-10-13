@@ -5,6 +5,8 @@ import ROOT
 import sys
 import os
 from DataFormats.FWLite import Events, Handle
+from matplotlib import pyplot as plt
+import sys
 
 # Take arguments from command line
 # Put "root://cmsxrootd.fnal.gov//" before file name
@@ -71,7 +73,7 @@ handles["generator"] = Handle("GenEventInfoProduct")
 n_weights = 10
 h_gluglu_pT_dict = {}
 for i in range(n_weights):
-    h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}','Transverse Momentum of Di-gluino system'.format(i),int(2800/50),0,2800)
+    h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}'.format(i),'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
     h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
     h_gluglu_pT_dict[i].SetStats(False)
 
@@ -127,15 +129,12 @@ for ievent,event in enumerate(events):
     if doPrint:
         print ("------------------Event", ievent)
     gluinop4list = []
+    masslist = []
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
-
-        mass = -1
-        if options.isAOD:
-            mass = genpart.mass()
-        else:
-            mass = genpart.mass()
+        mass = genpart.mass()
+        masslist.append(mass)
         if abs(pdgid) != 1000021:
             continue
         # if doPrint:
@@ -146,6 +145,11 @@ for ievent,event in enumerate(events):
             filteredCount += 1
             continue
         gluinop4list.append(genpart.p4())
+
+    plt.hist(masslist)
+    plt.savefig("masshist.png")
+    sys.exit()
+
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
         for i, weights, in enumerate(eventinfo.weights()):
