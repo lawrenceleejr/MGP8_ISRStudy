@@ -13,6 +13,9 @@ import sys
 # inputFiles = sys.argv[1]
 # outputFile = sys.argv[2]
 
+# Current best run command
+# python truth.py inputFiles_load=input-files/MGgluino2018_n50.list outputFilename=Real_01__MG.root targetMass=1000 isAOD=False printEvery=1000 targetStatus=62
+
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -64,18 +67,18 @@ if options.isAOD :
 # create handle outside of loop
 handles = {}
 handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
-handles["generator"] = Handle("GenEventInfoProduct")
+handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
 
 # Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
-n_weights = 10
+n_weights = 45
 h_gluglu_pT_dict = {}
 for i in range(n_weights):
     h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}'.format(i),'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
     h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
-    h_gluglu_pT_dict[i].SetStats(False)
+    h_gluglu_pT_dict[i].Sumw2()
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
@@ -121,10 +124,11 @@ for ievent,event in enumerate(events):
         doPrint = False
     # use getByLabel, just like in cmsRun
     event.getByLabel (genparticleLabel, handles[genparticleLabel])
+    event.getByLabel(eventinfoLabel, handles[eventinfoLabel])
 
     # get the product
     genparticles = handles[genparticleLabel].product()
-    eventinfo = handles["generator"].product()
+    eventinfo = handles[eventinfoLabel].product()
 
     if doPrint:
         print ("------------------Event", ievent)
@@ -152,8 +156,8 @@ for ievent,event in enumerate(events):
 
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-        for i, weights, in enumerate(eventinfo.weights()):
-            h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weights)
+        for i, weight, in enumerate(eventinfo.weights()):
+            h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weight)
         # print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
