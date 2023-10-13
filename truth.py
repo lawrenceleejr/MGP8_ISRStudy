@@ -14,7 +14,7 @@ import sys
 # outputFile = sys.argv[2]
 
 # Current best run command
-# python truth.py inputFiles_load=input-files/MGgluino2018_n50.list outputFilename=Real_01__MG.root targetMass=1000 isAOD=False printEvery=1000 targetStatus=62
+# python truth.py inputFiles_load=input-files/MGgluino2018_n50.list outputFilename=output-files/test.root targetMass=1000 isAOD=False printEvery=1000 targetStatus=62
 
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
@@ -114,6 +114,8 @@ Mass2.SetStats(False)
 filteredCount = 0
 #set to -1 for all events
 
+masslist = []
+
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
@@ -133,7 +135,6 @@ for ievent,event in enumerate(events):
     if doPrint:
         print ("------------------Event", ievent)
     gluinop4list = []
-    masslist = []
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
@@ -149,10 +150,6 @@ for ievent,event in enumerate(events):
             filteredCount += 1
             continue
         gluinop4list.append(genpart.p4())
-
-    plt.hist(masslist)
-    plt.savefig("masshist.png")
-    sys.exit()
 
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
@@ -187,4 +184,6 @@ outputFile.Close()
 # myFile.Write()
 # myFile.Close()
 # myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
+plt.hist(masslist)
+plt.savefig("masshist.png")
 print("\n\nEND")
