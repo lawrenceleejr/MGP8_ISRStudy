@@ -13,16 +13,34 @@ def transform_array_to_midpoint_array(arr):
 
     return new_arr
 
-rootpath = r"C:\Users\Colby\Box Sync\Larry work\h_gluglu_pT histograms\h_gluglu_MGn50_1000GeV.root"
-with uproot.open(rootpath) as root:
-    #print(root['pTsum {};1'].keys())
-    print(root.classnames())
-    arr = root['pTsum {};1'].to_numpy()
-    #bins = transform_array_to_midpoint_array(arr[1])
-    #plt.hist(bins, weights=arr[0], color="dodgerblue", alpha=0.8, edgecolor='black', histtype="stepfilled")
-    #plt.suptitle("Weighted MadGraph Samples, n=50, targetMass=1000GeV")
-    #plt.xlabel("H -> GluinoGluino pT (GeV)")
-    #plt.ylabel("Frequency (log scale)")
-    #plt.yscale("log")
-    #plt.show()
+def gluglu_pT_range_plot(rootfilepath, mass, savefig=None):
+    with uproot.open(rootfilepath) as root:
+        maxes = np.zeros(56)
+        mins = np.full(56, 100000000)
+        bins = []
+        for key in root.keys():
+            if 'pTsum' in key:
+                arr = root[key].to_numpy()
+                for i in range(len(arr[0])):
+                    if arr[0][i] > maxes[i]:
+                        maxes[i] = arr[0][i]
+                    if arr[0][i] < mins[i]:
+                        mins[i] = arr[0][i]
+                bins = transform_array_to_midpoint_array(arr[1])
+        mids = []
+        for i in range(len(maxes)):
+            mids.append(maxes[i]-mins[i])
 
+        plt.plot(bins, mids)
+        plt.fill_between(bins, mins, maxes, alpha=0.5, color='dodgerblue')
+        plt.suptitle("Min/Max {} GeV".format(mass))
+        plt.xlabel("gluglu pT (GeV)")
+        plt.ylabel("Weighted Frequency")
+
+        if savefig!=None:
+            plt.savefig(savefig)
+        else:
+            plt.show()
+
+rootpath = r"C:\Users\Colby\Box Sync\Larry work\gluglu_pT histograms\test.root"
+gluglu_pT_range_plot(rootpath, 1000)
