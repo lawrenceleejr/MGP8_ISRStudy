@@ -42,5 +42,9 @@ def gluglu_pT_range_plot(rootfilepath, mass, savefig=None):
         else:
             plt.show()
 
-rootpath = r"C:\Users\Colby\Box Sync\Larry work\gluglu_pT histograms\test.root"
-gluglu_pT_range_plot(rootpath, 1000)
+masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
+for mass in masses:
+    rootpath = "/Users/colbythompson/Documents/Research/gluglu_pT/gluglu_MGn50_GeV{}.root".format(mass)
+    with uproot.open(rootpath) as root:
+        print("{}\n{}".format(mass, root.keys()))
+    #gluglu_pT_range_plot(rootpath, 1000)
