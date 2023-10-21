@@ -5,8 +5,6 @@ import ROOT
 import sys
 import os
 from DataFormats.FWLite import Events, Handle
-from matplotlib import pyplot as plt
-import sys
 
 # Take arguments from command line
 # Put "root://cmsxrootd.fnal.gov//" before file name
@@ -114,8 +112,6 @@ Mass2.SetStats(False)
 filteredCount = 0
 #set to -1 for all events
 
-masslist = []
-
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
@@ -139,7 +135,6 @@ for ievent,event in enumerate(events):
         status = genpart.status()
         pdgid = genpart.pdgId()
         mass = genpart.mass()
-        masslist.append(mass)
         if abs(pdgid) != 1000021:
             continue
         # if doPrint:
@@ -184,6 +179,4 @@ outputFile.Close()
 # myFile.Write()
 # myFile.Close()
 # myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
-plt.hist(masslist)
-plt.savefig("masshist.png")
 print("\n\nEND")
