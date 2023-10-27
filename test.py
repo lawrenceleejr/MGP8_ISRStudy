@@ -1,4 +1,4 @@
-import numpy as np
+f = 1.5
 
-a = np.array([1,1,1,1,1,1,1,1,1,1])
-print(a[:-4])
+if type(f) != int:
+    print('yes')
