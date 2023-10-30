@@ -1,4 +1,6 @@
-f = 1.5
+test = {}
 
-if type(f) != int:
-    print('yes')
+for i in range(3):
+    test[i] = 4/3
+
+print(test[0])

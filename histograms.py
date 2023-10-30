@@ -148,4 +148,4 @@ pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\outp
 for i in range(len(masses)):
     mgpath = mg_rootpath_base + "{}.root".format(masses[i])
     pythiapath = pythia_rootpath_base + "{}.root".format(masses[i])
-    errorbar_ratioplot(masses[i], mgpath, pythiapath, True, r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_doublewidth{}GeV.png".format(masses[i]))
+    errorbar_ratioplot(masses[i], mgpath, pythiapath)
