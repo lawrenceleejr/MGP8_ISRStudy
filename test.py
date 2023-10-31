@@ -1,6 +1,7 @@
-test = {}
+from matplotlib import pyplot as plt
+import numpy as np
 
-for i in range(3):
-    test[i] = 4/3
-
-print(test[0])
+a1 = np.array([0.1,0.4,0.3])
+a2 = np.array([0.5,0.4,0.3])
+plt.errorbar([0,1,2], [1,1,1], yerr=(a1,a2), capsize=5, fmt='o')
+plt.show()
