@@ -65,18 +65,20 @@ if options.isAOD :
 # create handle outside of loop
 handles = {}
 handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
-handles[eventinfoLabel] = Handle("GenEventInfoProduct")
+#handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
 
 # Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
-n_weights = 45
+'''n_weights = 45
 h_gluglu_pT_dict = {}
 for i in range(n_weights):
     h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}'.format(i),'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
     h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
     h_gluglu_pT_dict[i].Sumw2()
+'''
+h_gluglu_pT_dict = ROOT.TH1F('pTsum', 'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
@@ -148,8 +150,8 @@ for ievent,event in enumerate(events):
 
     if len(gluinop4list) == 2:
         # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
-        for i, weight, in enumerate(eventinfo.weights()):
-            h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weight)
+        #for i, weight, in enumerate(eventinfo.weights()):
+        h_gluglu_pT_dict.Fill((gluinop4list[0] + gluinop4list[1]).Pt())
         # print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
