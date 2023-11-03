@@ -124,11 +124,11 @@ for ievent,event in enumerate(events):
         doPrint = False
     # use getByLabel, just like in cmsRun
     event.getByLabel (genparticleLabel, handles[genparticleLabel])
-    event.getByLabel(eventinfoLabel, handles[eventinfoLabel])
+    #event.getByLabel(eventinfoLabel, handles[eventinfoLabel])
 
     # get the product
     genparticles = handles[genparticleLabel].product()
-    eventinfo = handles[eventinfoLabel].product()
+    #eventinfo = handles[eventinfoLabel].product()
 
     if doPrint:
         print ("------------------Event", ievent)

@@ -251,18 +251,25 @@ def plot_ratio_errors(lower_errorbars, upper_errorbars, bins, mass, savefig=None
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 mg_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\gluglu_MGn50_GeV"
 pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\PYgluino_50gev-bin_M-"
+pythia_rootpath_base_v2 = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\ratioPlot_GG_M-"
 
+with uproot.open(r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\gluglu_MGn50_GeV1000.root") as root:
+    a = root['pTsum 1;1'].to_numpy()
+    print(sum(a[0]))
+### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
 #    all_histograms(masses[i], mg_rootpath_base+"{}.root".format(masses[i]), True, r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\log_weighted_pT_{}GeV.png".format(masses[i]))
 
-for i in range(len(masses)):
-    savefig = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_{}GeV.png".format(masses[i])
-    save_errors = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_errors{}GeV.png".format(masses[i])
-    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
-    pythiapath = pythia_rootpath_base + "{}.root".format(masses[i])
-    lower_errorbar, upper_errorbar, bins = errorbar_ratioplot(masses[i], mgpath, pythiapath, savefig=savefig)
-    plot_ratio_errors(lower_errorbar, upper_errorbar, bins, masses[i], savefig=save_errors)
+### Plot the ratio plots ###
+#for i in range(len(masses)):
+#    savefig = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_{}GeV.png".format(masses[i])
+#    save_errors = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_errors{}GeV.png".format(masses[i])
+#    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
+#    pythiapath = pythia_rootpath_base + "{}.root".format(masses[i])
+#    lower_errorbar, upper_errorbar, bins = errorbar_ratioplot(masses[i], mgpath, pythiapath, savefig=savefig)
+#    plot_ratio_errors(lower_errorbar, upper_errorbar, bins, masses[i], savefig=save_errors)
 
+### Plot the plus minus ratio errors ###
 #mgpathes = []
 #pythiapathes = []
 #for i in range(len(masses)):
