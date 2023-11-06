@@ -120,7 +120,6 @@ plotAllMG(MGHist, mass, savefig="output-files/allMG-M={}.root".format(mass))
 # pythiaHist.SetDirectory(0)
 # MGHist.SetDirectory(0)
 
-'''''
 pythiaHist.SetLineColor(kRed)
 MGHist.SetLineColor(kBlue)
 pythiaHist.Draw("hist")
@@ -204,4 +203,3 @@ MGHist.Write("MGHist")
 ratioHist.Write("ratioHist")
 outputFile.Write()
 outputFile.Close()
-'''''

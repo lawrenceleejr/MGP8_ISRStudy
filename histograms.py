@@ -248,14 +248,21 @@ def plot_ratio_errors(lower_errorbars, upper_errorbars, bins, mass, savefig=None
         plt.show()
 
 
+def rebin(histogram, new_bins): #Note this function requires ROOT
+    '''
+    :param histogram: Input TH1F histogram you would like to rebin
+    :param new_bins: New bins to transform the histogram into
+    :return: Returns new TH1F histogram with transformed bins
+    '''
+    newHist = histogram.Clone("newHistogram")
+    newHist.Rebin(len(new_bins), "newHistogram", new_bins)
+
+    return newHist
+
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 mg_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\gluglu_MGn50_GeV"
-pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\PYgluino_50gev-bin_M-"
-pythia_rootpath_base_v2 = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\ratioPlot_GG_M-"
+pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\pythia-M-"
 
-with uproot.open(r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\gluglu_MGn50_GeV1000.root") as root:
-    a = root['pTsum 1;1'].to_numpy()
-    print(sum(a[0]))
 ### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
 #    all_histograms(masses[i], mg_rootpath_base+"{}.root".format(masses[i]), True, r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\log_weighted_pT_{}GeV.png".format(masses[i]))
@@ -276,3 +283,28 @@ with uproot.open(r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-fil
 #    mgpathes.append(mg_rootpath_base + "{}.root".format(masses[i]))
 #    pythiapathes.append(pythia_rootpath_base + "{}.root".format(masses[i]))
 #errorbar_ratio_stackplot(masses, mgpathes, pythiapathes)
+
+### Rebin histograms (ROOT only) ###
+for i in range(len(masses)):
+    #Open the ROOT files and get the histograms
+    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
+    pypath = pythia_rootpath_base + "{}.root".format(masses[i])
+    pyfile = TFile.Open(pypath)
+    mgfile = TFile.Open(mgpath)
+    mghist = mgfile.Get("pTsum 0;1")
+    pythiahist = pyfile.Get("pTsum;1")
+
+    #Normalize the histograms
+    mghist.Scale(1. / mghist.Integral())
+    pythiahist.Scale(1. / pythiahist.Integral())
+
+    #Rebin the histograms
+    newmghist = rebin(mghist,[0.,50.,200.,2800.])
+    newpythiahist = rebin(pythiahist, [0.,50.,200.,2800.])
+
+    #Write the new histograms
+    outputFile = TFile("rebinned_MG_and_pythia-M-{}".format(masses[i]) + ".root", 'RECREATE')
+    newmghist.Write("MGHist")
+    newpythiahist.Write("PythiaHist")
+    outputFile.Write()
+    outputFile.Close()
