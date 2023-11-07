@@ -2,7 +2,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 import uproot
 import sys
-
+from ROOT import TFile
+import array
 
 def all_histograms(mass, mgpath, log=False, savefig=None):
     '''
@@ -255,13 +256,15 @@ def rebin(histogram, new_bins): #Note this function requires ROOT
     :return: Returns new TH1F histogram with transformed bins
     '''
     newHist = histogram.Clone("newHistogram")
-    newHist.Rebin(len(new_bins), "newHistogram", new_bins)
+    double_type_bins = array.array('d', new_bins) #This fixes an error concering the type of the bins
+    newHist = newHist.Rebin(len(new_bins)-1, "newHistogram", double_type_bins)
 
     return newHist
 
+
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
-mg_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\gluglu_MGn50_GeV"
-pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\output-files\pythia-M-"
+mg_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/gluglu_MGn50_GeV"
+pythia_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/pythia-M-"
 
 ### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
@@ -285,6 +288,7 @@ pythia_rootpath_base = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\outp
 #errorbar_ratio_stackplot(masses, mgpathes, pythiapathes)
 
 ### Rebin histograms (ROOT only) ###
+new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 for i in range(len(masses)):
     #Open the ROOT files and get the histograms
     mgpath = mg_rootpath_base + "{}.root".format(masses[i])
@@ -299,12 +303,12 @@ for i in range(len(masses)):
     pythiahist.Scale(1. / pythiahist.Integral())
 
     #Rebin the histograms
-    newmghist = rebin(mghist,[0.,50.,200.,2800.])
-    newpythiahist = rebin(pythiahist, [0.,50.,200.,2800.])
+    newmghist = rebin(mghist, new_bins)
+    newpythiahist = rebin(pythiahist, new_bins)
 
     #Write the new histograms
-    outputFile = TFile("rebinned_MG_and_pythia-M-{}".format(masses[i]) + ".root", 'RECREATE')
-    newmghist.Write("MGHist")
-    newpythiahist.Write("PythiaHist")
+    outputFile = TFile("output-files/rebinned_MG_and_pythia-M-{}".format(masses[i]) + ".root", 'RECREATE')
+    newmghist.Write("Madgraph")
+    newpythiahist.Write("Pythia")
     outputFile.Write()
     outputFile.Close()
