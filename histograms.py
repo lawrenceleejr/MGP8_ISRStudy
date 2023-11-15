@@ -1,9 +1,9 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import uproot
-import sys
 import ROOT
 import array
+from ctypes import c_double
 
 def all_histograms(mass, mgpath, log=False, savefig=None):
     '''
@@ -53,38 +53,41 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     pyfile = ROOT.TFile.Open(pythiapath)
     mgfile = ROOT.TFile.Open(mgpath)
 
-    #Iterate through all madgraph histograms, return one histogram with all max bins values, another with all min values
+    #Iterate through all madgraph histograms, return one numpy array with all max bins values + errors, another with all min values + errors
     pythiahist = pyfile.Get("pTsum;1")
+    pythiahist.Scale(1. / pythiahist.Integral())
     pythiahist_rebinned = rebin(pythiahist, bins)
-    pythiahist_rebinned.Scale(1. / pythiahist_rebinned.Integral())
-    mins = np.repeat(10000000, len(bins))
-    maxes = np.zeros(len(bins))
+    mins, maxes = np.repeat(10000000., len(bins)-1), np.zeros(len(bins)-1)
+    min_errors, max_errors = np.zeros(len(bins) - 1), np.zeros(len(bins) - 1)
     zeroth = 0
     for i in range(n_weights):
         mghist = mgfile.Get("pTsum {};1".format(i))
+        mghist.Scale(1. / mghist.Integral())
         mghist_rebinned = rebin(mghist, bins)
-        mghist_rebinned.Scale(1. / mghist_rebinned.Integral())
         if i == 0:
             zeroth = mghist_rebinned
-        for bin in range(len(bins)):
+        for bin in range(len(bins)-1):
             n_entries_in_bin = mghist_rebinned.GetBinContent(bin+1)
+            error = mghist_rebinned.GetBinError(bin+1)
             if n_entries_in_bin < mins[bin]:
                 mins[bin] = n_entries_in_bin
+                min_errors[bin] = error
             if n_entries_in_bin > maxes[bin]:
                 maxes[bin] = n_entries_in_bin
+                max_errors[bin] = error
 
     #Create the min/max histograms
-    min_hist, max_hist = create_min_max_hists(bins, mins, maxes)
+    min_hist, max_hist = create_min_max_hists(bins, mins, maxes, min_errors, max_errors)
 
-    #Get the min/max ratio plots (converted to TGraphAsymmErrors)
-    min_ratio = ratioPlot(min_hist, pythiahist_rebinned)
-    max_ratio = ratioPlot(max_hist, pythiahist_rebinned)
-    zeroth_ratio = ratioPlot(zeroth, pythiahist_rebinned)
+    #Get the min/max ratio plots (TGraphAsymmErrors)
+    min_ratio = ROOT.TGraphAsymmErrors(min_hist, pythiahist_rebinned, "pois")
+    max_ratio = ROOT.TGraphAsymmErrors(max_hist, pythiahist_rebinned, "pois")
+    zeroth_ratio = ROOT.TGraphAsymmErrors(zeroth, pythiahist_rebinned, "pois")
 
-    #Fill the ratio plots to a histogram
-    min_ratio_hist = pythiahist_rebinned.Clone("Minimum Ratio")
-    max_ratio_hist = pythiahist_rebinned.Clone("Maximum Ratio")
-    zeroth_ratio_hist = pythiahist_rebinned.Clone("Zeroth Ratio")
+    #Convert the TGraph ratios to histograms
+    min_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Minimum")
+    max_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Maximum")
+    zeroth_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Nominal")
     ratioHistFill(min_ratio, min_ratio_hist, bins)
     ratioHistFill(max_ratio, max_ratio_hist, bins)
     ratioHistFill(zeroth_ratio, zeroth_ratio_hist, bins)
@@ -96,25 +99,28 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     app.Run()
 
 
-def create_min_max_hists(bins, mindata, maxdata):
+def create_min_max_hists(bins, mindata, maxdata, minerrors, maxerrors):
     '''
     :param bins: List of bins to set the histograms
     :param mindata: Numpy array of min weights for each bin
     :param maxdata: Numpy array of max weights for each bin
+    :param minerrors: Numpy array of errors for each minimum bin
+    :param maxerrors: Numpy array of errors for each maximum bin
     :return: Minimum and maximum histograms
     '''
     #Create the raw histograms
-    min_hist = ROOT.TH1F("Minimum Madgraph", "Minimum Madgraph", len(bins), array.array('d', bins))
-    max_hist = ROOT.TH1F("Maximum Madgraph", "Maximum Madgraph", len(bins), array.array('d', bins))
+    min_hist = ROOT.TH1F("Minimum Madgraph", "Minimum Madgraph", len(bins)-1, array.array('d', bins))
+    max_hist = ROOT.TH1F("Maximum Madgraph", "Maximum Madgraph", len(bins)-1, array.array('d', bins))
     min_hist.GetXaxis().SetLimits(min(bins), max(bins))
     max_hist.GetXaxis().SetLimits(min(bins), max(bins))
 
     #Fill the histograms with the data
     for i in range(len(mindata)):
         min_hist.SetBinContent(i + 1, mindata[i])
+        min_hist.SetBinError(i + 1, minerrors[i])
     for i in range(len(maxdata)):
-        max_hist.SetBinContent(i + 1, maxdata[i])
-
+        max_hist.SetBinContent(i+1, maxdata[i])
+        max_hist.SetBinError(i + 1, maxerrors[i])
     return min_hist, max_hist
 
 
@@ -131,13 +137,6 @@ def rebin(histogram, new_bins):
     return newHist
 
 
-def ratioPlot(mghist, pythiahist):
-    ratioPlot = ROOT.TRatioPlot(mghist, pythiahist)
-    ratioTempGraph = ratioPlot.GetLowerRefGraph()
-
-    return ROOT.TGraphAsymmErrors(ratioTempGraph)
-
-
 def ratioHistFill(ratioTempGraph, ratioHist, bins):
     '''
     :param ratioTempGraph: TRatioPlot
@@ -146,9 +145,10 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :return: Fills a histogram with the ratio information
     '''
     for bin in range(bins[0], bins[-1]):
-        x , y = 0., 0.
+        x , y = c_double(1.), c_double(1.)
         ratioTempGraph.GetPoint(bin, x, y)
         ratioHist.SetBinContent(ratioHist.FindBin(x), y)
+        ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
 
 
 def error3D():
