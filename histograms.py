@@ -164,7 +164,7 @@ pythia_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 mgpath = mg_rootpath_base + "{}.root".format(masses[0])
 pypath = pythia_rootpath_base + "{}.root".format(masses[0])
-errorbar_ratioplot(masses[0], new_bins, mgpath, pypath, '')
+errorbar_ratioplot(masses[0], new_bins, mgpath, pypath, 'test{}GeV'.format(masses[0]))
 
 ### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
