@@ -149,17 +149,10 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :return: Fills a histogram with the ratio information
     '''
     for bin in range(bins[0], bins[-1]):
-        try:
-            x , y = c_double(1.), c_double(1.)
-            ratioTempGraph.GetPoint(bin, x, y)
-            ratioHist.SetBinContent(ratioHist.FindBin(x), y)
-            ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
-        except TypeError:
-            x, y = 0., 0.
-            ratioTempGraph.GetPoint(bin, x, y)
-            ratioHist.SetBinContent(ratioHist.FindBin(x), y)
-            ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
-
+        x , y = c_double(1.), c_double(1.)
+        ratioTempGraph.GetPoint(bin, x, y)
+        ratioHist.SetBinContent(ratioHist.FindBin(float(x)), y)
+        ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
 
 def error3D():
     return None
