@@ -3,6 +3,7 @@ import numpy as np
 import uproot
 import ROOT
 import array
+import os
 from ctypes import c_double
 
 def all_histograms(mass, mgpath, log=False, savefig=None):
@@ -159,8 +160,9 @@ def error3D():
 
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
-mg_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/gluglu_MGn50_GeV"
-pythia_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/pythia-M-"
+cwd = os.getcwd()
+mg_rootpath_base = cwd + "output-files/gluglu_MGn50_GeV"
+pythia_rootpath_base = cwd + "output-files/pythia-M-"
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 mgpath = mg_rootpath_base + "{}.root".format(masses[0])
 pypath = pythia_rootpath_base + "{}.root".format(masses[0])
