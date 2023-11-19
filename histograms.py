@@ -93,10 +93,13 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     ratioHistFill(zeroth_ratio, zeroth_ratio_hist, bins)
 
     #Create the 0th ratio histogram, fill errors from the min/max
-    c1 = ROOT.TCanvas("c1", "min ratio")
-    min_ratio_hist.Draw()
-    c1.Update()
-    app.Run()
+    outputFile = TFile(outputpath + ".root", 'RECREATE')
+    min_ratio_hist.Write("min_ratio")
+    max_ratio_hist.Write("max_ratio")
+    zeroth_ratio_hist.Write("zeroth_ratio")
+    outputFile.Write()
+    outputFile.Close()
+
 
 
 def create_min_max_hists(bins, mindata, maxdata, minerrors, maxerrors):
@@ -155,7 +158,6 @@ def error3D():
     return None
 
 
-app = ROOT.TApplication("app",0,0)
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 mg_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/gluglu_MGn50_GeV"
 pythia_rootpath_base = "/Users/colbythompson/PycharmProjects/MGP8_ISRStudy_LAdev/output-files/pythia-M-"
