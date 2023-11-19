@@ -4,7 +4,7 @@ import uproot
 import ROOT
 import array
 import os
-from ctypes import c_double
+from ctypes import c_double, c_float
 
 def all_histograms(mass, mgpath, log=False, savefig=None):
     '''
@@ -149,9 +149,9 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :return: Fills a histogram with the ratio information
     '''
     for bin in range(bins[0], bins[-1]):
-        x , y = c_double(1.), c_double(1.)
+        x, y = c_double(1.), c_double(1.)
         ratioTempGraph.GetPoint(bin, x, y)
-        ratioHist.SetBinContent(ratioHist.FindBin(float(x)), y)
+        ratioHist.SetBinContent(c_float(ratioHist.FindBin(x)), y)
         ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
 
 def error3D():
