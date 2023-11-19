@@ -149,10 +149,16 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :return: Fills a histogram with the ratio information
     '''
     for bin in range(bins[0], bins[-1]):
-        x , y = c_double(1.), c_double(1.)
-        ratioTempGraph.GetPoint(bin, x, y)
-        ratioHist.SetBinContent(ratioHist.FindBin(x), y)
-        ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
+        try:
+            x , y = c_double(1.), c_double(1.)
+            ratioTempGraph.GetPoint(bin, x, y)
+            ratioHist.SetBinContent(ratioHist.FindBin(x), y)
+            ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
+        except TypeError:
+            x, y = 0., 0.
+            ratioTempGraph.GetPoint(bin, x, y)
+            ratioHist.SetBinContent(ratioHist.FindBin(x), y)
+            ratioHist.SetBinError(ratioHist.FindBin(x), ratioTempGraph.GetErrorY(bin))
 
 
 def error3D():
@@ -161,8 +167,8 @@ def error3D():
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 cwd = os.getcwd()
-mg_rootpath_base = cwd + "output-files/gluglu_MGn50_GeV"
-pythia_rootpath_base = cwd + "output-files/pythia-M-"
+mg_rootpath_base = cwd + "/output-files/gluglu_MGn50_GeV"
+pythia_rootpath_base = cwd + "/output-files/pythia-M-"
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 mgpath = mg_rootpath_base + "{}.root".format(masses[0])
 pypath = pythia_rootpath_base + "{}.root".format(masses[0])
