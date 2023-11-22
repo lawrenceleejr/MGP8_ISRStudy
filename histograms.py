@@ -164,7 +164,7 @@ def midpoints(list):
     midpoint = []
     for i in range(len(list)):
         try:
-            midpoint.append((list[i+1]-list[i])/2)
+            midpoint.append(list[i]+(list[i+1]-list[i])/2)
         except:
             break
 
