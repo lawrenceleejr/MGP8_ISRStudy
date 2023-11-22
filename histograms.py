@@ -95,9 +95,10 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
 
     #Create the 0th ratio histogram, fill errors from the min/max
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-    min_ratio_hist.Write("min_ratio")
-    max_ratio_hist.Write("max_ratio")
-    zeroth_ratio_hist.Write("zeroth_ratio")
+    min_ratio.Write("min_ratio")
+    min_ratio_hist.Write("min_ratio_hist")
+    max_ratio_hist.Write("max_ratio_hist")
+    zeroth_ratio_hist.Write("zeroth_ratio_hist")
     outputFile.Write()
     outputFile.Close()
 
