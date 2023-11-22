@@ -95,7 +95,6 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
 
     #Create the 0th ratio histogram, fill errors from the min/max
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-    min_ratio.Write("min_ratio")
     min_ratio_hist.Write("min_ratio_hist")
     max_ratio_hist.Write("max_ratio_hist")
     zeroth_ratio_hist.Write("zeroth_ratio_hist")
@@ -149,11 +148,29 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :param bins: Bins of the histogram
     :return: Fills a histogram with the ratio information
     '''
-    for bin in range(bins[0], bins[-1]):
+    midpoint = midpoints(bins)
+    for mid in midpoint:
         x, y = c_double(1.), c_double(1.)
-        ratioTempGraph.GetPoint(bin, x, y)
+        ratioTempGraph.GetPoint(mid, x, y)
         ratioHist.SetBinContent(ratioHist.FindBin(x.value), y.value)
-        ratioHist.SetBinError(ratioHist.FindBin(x.value), ratioTempGraph.GetErrorY(bin))
+        ratioHist.SetBinError(ratioHist.FindBin(x.value), ratioTempGraph.GetErrorY(mid))
+
+
+def midpoints(list):
+    '''
+    :param list: List of length n
+    :return: List of length n-1 that include the midpoints of the original list
+    '''
+    midpoint = []
+    for i in range(len(list)):
+        try:
+            midpoint.append((list[i+1]-list[i])/2)
+        except:
+            break
+
+    return midpoint
+
+
 
 def error3D():
     return None
