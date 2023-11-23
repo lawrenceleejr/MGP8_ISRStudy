@@ -86,18 +86,23 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     zeroth_ratio = ROOT.TGraphAsymmErrors(zeroth, pythiahist_rebinned, "pois")
 
     #Convert the TGraph ratios to histograms
-    min_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Minimum")
-    max_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Maximum")
-    zeroth_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Nominal")
-    ratioHistFill(min_ratio, min_ratio_hist, bins)
-    ratioHistFill(max_ratio, max_ratio_hist, bins)
-    ratioHistFill(zeroth_ratio, zeroth_ratio_hist, bins)
+    #min_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Minimum")
+    #max_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Maximum")
+    #zeroth_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Nominal")
+    #ratioHistFill(min_ratio, min_ratio_hist, bins)
+    #ratioHistFill(max_ratio, max_ratio_hist, bins)
+    #ratioHistFill(zeroth_ratio, zeroth_ratio_hist, bins)
 
-    #Create the 0th ratio histogram, fill errors from the min/max
+    #Create systematic error plot
+    zeroth_ratio_sys = zeroth_ratio.Clone("MG/Pythia Ratio Systematic Errors")
+    setSystematicErrors(zeroth_ratio_sys, min_ratio, max_ratio, bins)
+
+    #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-    min_ratio_hist.Write("min_ratio_hist")
-    max_ratio_hist.Write("max_ratio_hist")
-    zeroth_ratio_hist.Write("zeroth_ratio_hist")
+    min_ratio.Write("min_ratio")
+    max_ratio.Write("max_ratio")
+    zeroth_ratio.Write("zeroth_ratio_stat")
+    zeroth_ratio_sys.Write("zeroth_ratio_sys")
     outputFile.Write()
     outputFile.Close()
 
@@ -153,9 +158,21 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
         x, y = c_double(1.), c_double(1.)
         y_error = ratioTempGraph.GetErrorY(bin)
         ratioTempGraph.GetPoint(bin, x, y)
-        print("Bin = {}, X = {}, Y = {}, Y Error = {}".format(bin, x, y, y_error))
         ratioHist.SetBinContent(ratioHist.FindBin(x.value), y.value)
         ratioHist.SetBinError(ratioHist.FindBin(x.value), y_error)
+
+
+def setSystematicErrors(zeroth_ratio, min_ratio, max_ratio, bins):
+    '''
+    :param zeroth_ratio: TGraphAssymErrors plot for the zeroth ratio
+    :param min_ratio: TGraphAssymErrors plot for the min ratio
+    :param max_ratio: TGraphAssymErrors plot for the max ratio
+    :param bins: Bins used in the plots
+    :return: TGraphAssymErrors plot for the zeroth ratio with the systematic errors
+    '''
+    for bin in range(len(bins)-1):
+        zeroth_ratio.SetPointEYhigh(bin, max_ratio.GetPointY(bin))
+        zeroth_ratio.SetPointEYlow(bin, min_ratio.GetPointY(bin))
 
 
 def error3D():
