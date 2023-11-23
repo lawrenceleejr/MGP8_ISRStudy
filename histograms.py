@@ -120,11 +120,11 @@ def create_min_max_hists(bins, mindata, maxdata, minerrors, maxerrors):
 
     #Fill the histograms with the data
     for i in range(len(mindata)):
-        min_hist.SetBinContent(i, mindata[i])
-        min_hist.SetBinError(i, minerrors[i])
+        min_hist.SetBinContent(i+1, mindata[i])
+        min_hist.SetBinError(i+1, minerrors[i])
     for i in range(len(maxdata)):
-        max_hist.SetBinContent(i, maxdata[i])
-        max_hist.SetBinError(i, maxerrors[i])
+        max_hist.SetBinContent(i+1, maxdata[i])
+        max_hist.SetBinError(i+1, maxerrors[i])
 
     return min_hist, max_hist
 
@@ -149,10 +149,11 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :param bins: Bins of the histogram
     :return: Fills a histogram with the ratio information
     '''
-    for bin in range(len(bins)):
+    for bin in range(len(bins)-1):
         x, y = c_double(1.), c_double(1.)
-        y_error = ratioTempGraph.GetErrorY(bin)
-        ratioTempGraph.GetPoint(bin, x, y)
+        y_error = ratioTempGraph.GetErrorY(bin+1)
+        ratioTempGraph.GetPoint(bin+1, x, y)
+        print("Bin = {}, X = {}, Y = {}, Y Error = {}".format(bin, x, y, y_error))
         ratioHist.SetBinContent(ratioHist.FindBin(x.value), y.value)
         ratioHist.SetBinError(ratioHist.FindBin(x.value), y_error)
 
