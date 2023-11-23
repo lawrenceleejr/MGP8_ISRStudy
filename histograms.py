@@ -1,42 +1,9 @@
 from matplotlib import pyplot as plt
 import numpy as np
-import uproot
 import ROOT
 import array
 import os
-from ctypes import c_double, c_float
-
-def all_histograms(mass, mgpath, log=False, savefig=None):
-    '''
-    :param mass: Mass of the root file
-    :param mgpath: Path to the root file
-    :param log: If True, makes the y axis log scale
-    :param savefig: Path to save the histogram
-    :return: All normalized weighted pT histograms on one plot
-    '''
-    plt.clf()
-    with uproot.open(mgpath) as root:
-        for key in root.keys():
-            if 'pTsum' in key:
-                if key == 'pTsum 0;1':
-                    continue
-                arr = root[key].to_numpy()
-                normalized_frequency = arr[0]/(sum(arr[0])*50)
-                plt.plot(arr[1][:-1], normalized_frequency, color='dodgerblue')
-        plt.suptitle('Weighted pT, Gluino Target Mass = {} GeV'.format(mass))
-        plt.xlabel('gluglu pT (GeV)')
-        plt.xlim(0, 2800)
-        if log:
-            plt.yscale('log')
-            plt.ylabel('Normalized Frequency (log)')
-            plt.ylim(0.0000001, 0.01)
-        else:
-            plt.ylabel('Normalized Frequency')
-            plt.ylim(0,0.01)
-        if savefig != None:
-            plt.savefig(savefig)
-        else:
-            plt.show()
+from ctypes import c_double
 
 def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     '''
@@ -99,14 +66,8 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
 
     #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-
-    zeroth_ratio.SetTitle("MG/Pythia gluglu pT w/ stat errors")
-    zeroth_ratio.SetXTitle("gluglu pT (GeV)")
-    zeroth_ratio.SetYTitle("MG/Pythia")
-    zeroth_ratio_sys.SetTitle("MG/Pythia gluglu pT w/ stat errors")
-    zeroth_ratio_sys.SetXTitle("gluglu pT (GeV)")
-    zeroth_ratio_sys.SetYTitle("MG/Pythia")
-
+    zeroth_ratio.SetTitle("MG/Pythia gluglu pT w/ stat errors;gluglu pT (GeV);MG/Pythia")
+    zeroth_ratio_sys.SetTitle("MG/Pythia gluglu pT w/ systematic errors;gluglu pT (GeV);MG/Pythia")
     zeroth_ratio.Write("mg-py_stat")
     zeroth_ratio_sys.Write("mg-py_sys")
     outputFile.Write()
