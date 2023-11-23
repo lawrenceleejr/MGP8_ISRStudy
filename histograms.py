@@ -159,7 +159,7 @@ new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 for i in range(len(masses)):
     mgpath = mg_rootpath_base + "{}.root".format(masses[i])
     pypath = pythia_rootpath_base + "{}.root".format(masses[i])
-    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, '/histograms/mg-py_ratio-{}GeV'.format(masses[i]))
+    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, 'histograms/mg-py_ratio-{}GeV'.format(masses[i]))
 
 ### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
