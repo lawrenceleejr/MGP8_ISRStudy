@@ -170,12 +170,14 @@ def setSystematicErrors(zeroth_ratio, min_ratio, max_ratio, bins):
     :param bins: Bins used in the plots
     :return: TGraphAssymErrors plot for the zeroth ratio with the systematic errors
     '''
-    max_y = max_ratio.GetY()
+    zeroth_y = zeroth_ratio.GetY()
     min_y = min_ratio.GetY()
+    max_y = max_ratio.GetY()
     for bin in range(len(bins)-1):
-        print(max_y[bin], min_y[bin])
-        zeroth_ratio.SetPointEYhigh(bin, max_y[bin])
-        zeroth_ratio.SetPointEYlow(bin, min_y[bin])
+        y_err_high = max_y[bin] - zeroth_y[bin]
+        y_err_low = zeroth_y[bin] - min_y[bin]
+        zeroth_ratio.SetPointEYhigh(bin, y_err_high)
+        zeroth_ratio.SetPointEYlow(bin, y_err_low)
 
 
 def error3D():
