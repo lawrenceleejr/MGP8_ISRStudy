@@ -172,8 +172,8 @@ def setSystematicErrors(zeroth_ratio, min_ratio, max_ratio, bins):
     '''
     max_y = max_ratio.GetY()
     min_y = min_ratio.GetY()
-    print("Max_y = {}".format(max_y))
     for bin in range(len(bins)-1):
+        print(max_y[bin], min_y[bin])
         zeroth_ratio.SetPointEYhigh(bin, max_y[bin])
         zeroth_ratio.SetPointEYlow(bin, min_y[bin])
 
