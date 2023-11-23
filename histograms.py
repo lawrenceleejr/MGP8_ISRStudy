@@ -86,9 +86,9 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     zeroth_ratio = ROOT.TGraphAsymmErrors(zeroth, pythiahist_rebinned, "pois")
 
     #Convert the TGraph ratios to histograms
-    min_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Minimum")
-    max_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Maximum")
-    zeroth_ratio_hist = pythiahist.Clone("MG/Pythia Ratio Nominal")
+    min_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Minimum")
+    max_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Maximum")
+    zeroth_ratio_hist = pythiahist_rebinned.Clone("MG/Pythia Ratio Nominal")
     ratioHistFill(min_ratio, min_ratio_hist, bins)
     ratioHistFill(max_ratio, max_ratio_hist, bins)
     ratioHistFill(zeroth_ratio, zeroth_ratio_hist, bins)
