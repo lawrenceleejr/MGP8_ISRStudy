@@ -13,5 +13,5 @@ def midpoints(list):
     return midpoint
 
 list = [1,2,4,8,16]
-mid = midpoints(list)
-print(mid)
+for i in range(len(list)):
+    print(i)

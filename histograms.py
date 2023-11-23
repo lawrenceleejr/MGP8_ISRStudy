@@ -148,28 +148,11 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     :param bins: Bins of the histogram
     :return: Fills a histogram with the ratio information
     '''
-    midpoint = midpoints(bins)
-    for mid in midpoint:
+    for bin in range(len(bins)):
         x, y = c_double(1.), c_double(1.)
-        ratioTempGraph.GetPoint(mid, x, y)
+        ratioTempGraph.GetPoint(bin, x, y)
         ratioHist.SetBinContent(ratioHist.FindBin(x.value), y.value)
-        ratioHist.SetBinError(ratioHist.FindBin(x.value), ratioTempGraph.GetErrorY(mid))
-
-
-def midpoints(list):
-    '''
-    :param list: List of length n
-    :return: List of length n-1 that include the midpoints of the original list
-    '''
-    midpoint = []
-    for i in range(len(list)):
-        try:
-            midpoint.append(list[i]+(list[i+1]-list[i])/2)
-        except:
-            break
-
-    return midpoint
-
+        ratioHist.SetBinError(ratioHist.FindBin(x.value), ratioTempGraph.GetErrorY(bin))
 
 
 def error3D():
