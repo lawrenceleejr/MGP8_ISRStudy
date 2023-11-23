@@ -151,8 +151,8 @@ def ratioHistFill(ratioTempGraph, ratioHist, bins):
     '''
     for bin in range(len(bins)-1):
         x, y = c_double(1.), c_double(1.)
-        y_error = ratioTempGraph.GetErrorY(bin+1)
-        ratioTempGraph.GetPoint(bin+1, x, y)
+        y_error = ratioTempGraph.GetErrorY(bin)
+        ratioTempGraph.GetPoint(bin, x, y)
         print("Bin = {}, X = {}, Y = {}, Y Error = {}".format(bin, x, y, y_error))
         ratioHist.SetBinContent(ratioHist.FindBin(x.value), y.value)
         ratioHist.SetBinError(ratioHist.FindBin(x.value), y_error)
