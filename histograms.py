@@ -64,11 +64,18 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     zeroth_ratio_sys = zeroth_ratio.Clone("MG/Pythia Ratio Systematic Errors")
     setSystematicErrors(zeroth_ratio_sys, min_ratio, max_ratio, bins)
 
+    #Create the legends
+    legend = ROOT.TLegend()
+    legend.SetHeader("Mass = {} GeV\nnEntries = {}".format(mass, min_hist.GetEntries()), "C")
+    legend.Draw()
+
     #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
     zeroth_ratio.SetTitle("MG/Pythia gluglu pT w/ stat errors;gluglu pT (GeV);MG/Pythia")
     zeroth_ratio_sys.SetTitle("MG/Pythia gluglu pT w/ systematic errors;gluglu pT (GeV);MG/Pythia")
+    zeroth_ratio.Draw("AP")
     zeroth_ratio.Write("mg-py_stat")
+    zeroth_ratio_sys.Draw("AP")
     zeroth_ratio_sys.Write("mg-py_sys")
     outputFile.Write()
     outputFile.Close()
