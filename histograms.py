@@ -99,10 +99,16 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
 
     #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-    min_ratio.Write("min_ratio")
-    max_ratio.Write("max_ratio")
-    zeroth_ratio.Write("zeroth_ratio_stat")
-    zeroth_ratio_sys.Write("zeroth_ratio_sys")
+
+    zeroth_ratio.SetTitle("MG/Pythia gluglu pT w/ stat errors")
+    zeroth_ratio.SetXTitle("gluglu pT (GeV)")
+    zeroth_ratio.SetYTitle("MG/Pythia")
+    zeroth_ratio_sys.SetTitle("MG/Pythia gluglu pT w/ stat errors")
+    zeroth_ratio_sys.SetXTitle("gluglu pT (GeV)")
+    zeroth_ratio_sys.SetYTitle("MG/Pythia")
+
+    zeroth_ratio.Write("mg-py_stat")
+    zeroth_ratio_sys.Write("mg-py_sys")
     outputFile.Write()
     outputFile.Close()
 
@@ -189,9 +195,10 @@ cwd = os.getcwd()
 mg_rootpath_base = cwd + "/output-files/gluglu_MGn50_GeV"
 pythia_rootpath_base = cwd + "/output-files/pythia-M-"
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
-mgpath = mg_rootpath_base + "{}.root".format(masses[0])
-pypath = pythia_rootpath_base + "{}.root".format(masses[0])
-errorbar_ratioplot(masses[0], new_bins, mgpath, pypath, 'test{}GeV'.format(masses[0]))
+for i in range(len(masses)):
+    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
+    pypath = pythia_rootpath_base + "{}.root".format(masses[i])
+    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, '/histograms/mg-py_ratio-{}GeV'.format(masses[i]))
 
 ### Plot all of the madgraph histograms ###
 #for i in range(len(masses)):
