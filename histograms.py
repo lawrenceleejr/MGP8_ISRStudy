@@ -66,8 +66,8 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
 
     #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
-    zeroth_ratio.SetTitle("MG N={}, Pythia N={}, Stat Errors;gluglu pT (GeV);MG/Pythia".format(min_hist.GetEntries(), pythiahist_rebinned.GetEntries()))
-    zeroth_ratio_sys.SetTitle("MG N={}, Pythia N={}, Systematic Errors;gluglu pT (GeV);MG/Pythia".format(min_hist.GetEntries(), pythiahist_rebinned.GetEntries()))
+    zeroth_ratio.SetTitle("MG N={}, Pythia N={}, Stat Errors;gluglu pT (GeV);MG/Pythia".format(zeroth.GetEntries(), pythiahist_rebinned.GetEntries()))
+    zeroth_ratio_sys.SetTitle("MG N={}, Pythia N={}, Systematic Errors;gluglu pT (GeV);MG/Pythia".format(zeroth.GetEntries(), pythiahist_rebinned.GetEntries()))
     zeroth_ratio.Write("mg_py_stat")
     zeroth_ratio_sys.Write("mg_py_sys")
     outputFile.Write()
