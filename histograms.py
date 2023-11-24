@@ -65,17 +65,22 @@ def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     setSystematicErrors(zeroth_ratio_sys, min_ratio, max_ratio, bins)
 
     #Create the legends
-    legend = ROOT.TLegend()
-    legend.SetHeader("Mass = {} GeV\nMG nEntries = {}\nPythia nEntries".format(mass, min_hist.GetEntries(),
+    legend_stat = ROOT.TLegend()
+    legend_sys = ROOT.TLegend()
+    legend_stat.SetHeader("Mass = {} GeV\nMG nEntries = {}\nPythia nEntries".format(mass, min_hist.GetEntries(),
                                                                                pythiahist_rebinned.GetEntries()), "C")
-    legend.Draw()
+    legend_sys.SetHeader("Mass = {} GeV\nMG nEntries = {}\nPythia nEntries".format(mass, min_hist.GetEntries(),
+                                                                                    pythiahist_rebinned.GetEntries()), "C")
 
     #Write to the ROOT file
     outputFile = ROOT.TFile(outputpath + ".root", 'RECREATE')
     zeroth_ratio.SetTitle("MG/Pythia gluglu pT w/ stat errors;gluglu pT (GeV);MG/Pythia")
     zeroth_ratio_sys.SetTitle("MG/Pythia gluglu pT w/ systematic errors;gluglu pT (GeV);MG/Pythia")
-    zeroth_ratio.Write("mg_py_stat")
-    zeroth_ratio_sys.Write("mg_py_sys")
+    legend_stat.AddEntry(zeroth_ratio)
+    legend_sys.AddEntry(zeroth_ratio_sys)
+
+    legend_stat.Write("mg_py_stat")
+    legend_sys.Write("mg_py_sys")
     outputFile.Write()
     outputFile.Close()
 
