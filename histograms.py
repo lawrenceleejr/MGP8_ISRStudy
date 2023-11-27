@@ -171,7 +171,7 @@ def fillcsv(rootpaths, bins):
             dictionary['sysup'].append(syshist.GetErrorYhigh(bin))
             dictionary['sysdown'].append(syshist.GetErrorYlow(bin))
 
-    df = pd.Dataframe(dictionary)
+    df = pd.DataFrame(dictionary)
     df.to_csv('ratio_information.csv', index=False)
 
 
