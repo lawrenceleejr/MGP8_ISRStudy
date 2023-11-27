@@ -3,7 +3,9 @@ import numpy as np
 import ROOT
 import array
 import os
+import pandas as pd
 from ctypes import c_double
+import re
 
 def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     '''
@@ -147,37 +149,51 @@ def setSystematicErrors(zeroth_ratio, min_ratio, max_ratio, bins):
         zeroth_ratio.SetPointEYlow(bin, y_err_low)
 
 
+def fillcsv(rootpaths, bins):
+    '''
+    :param rootpaths: List of paths to ratio root files
+    :param bins: Bins used in the ratio plots
+    :return: Saves a csv containing the relevant information
+    '''
+    dictionary = {'mass': [], 'pT': [], 'ratio': [], 'stat': [], 'sysup': [], 'sysdown': []}
+    for root in rootpaths:
+        mass = re.search(r'(\d+)GeV', root).group(1)
+        file = ROOT.TFile.Open(root)
+        stathist = file.Get('mg_py_stat')
+        syshist = file.Get('mg_py_sys')
+        x_values = stathist.GetX()
+        y_values = stathist.GetY()
+        for bin in range(len(bins)-1):
+            dictionary['mass'].append(mass)
+            dictionary['pT'].append(x_values[bin])
+            dictionary['ratio'].append(y_values[bin])
+            dictionary['stat'].append(stathist.GetErrorY(bin))
+            dictionary['sysup'].append(syshist.GetErrorYhigh(bin))
+            dictionary['sysdown'].append(syshist.GetErrorYlow(bin))
+
+    df = pd.Dataframe(dictionary)
+    df.to_csv('ratio_information.csv', index=False)
+
+
 def error3D():
     return None
 
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
-cwd = os.getcwd()
-mg_rootpath_base = cwd + "/output-files/gluglu_MGn50_GeV"
-pythia_rootpath_base = cwd + "/output-files/pythia-M-"
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
-for i in range(len(masses)):
-    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
-    pypath = pythia_rootpath_base + "{}.root".format(masses[i])
-    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, 'histograms/mg-py_ratio-{}GeV'.format(masses[i]))
 
-### Plot all of the madgraph histograms ###
+###Plot the ratio plots###
+#cwd = os.getcwd()
+#mg_rootpath_base = cwd + "/output-files/gluglu_MGn50_GeV"
+#pythia_rootpath_base = cwd + "/output-files/pythia-M-"
 #for i in range(len(masses)):
-#    all_histograms(masses[i], mg_rootpath_base+"{}.root".format(masses[i]), True, r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\log_weighted_pT_{}GeV.png".format(masses[i]))
-
-### Plot the ratio plots ###
-#for i in range(len(masses)):
-#    savefig = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_{}GeV.png".format(masses[i])
-#    save_errors = r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\histograms\MG_Pythia_ratio_errors{}GeV.png".format(masses[i])
 #    mgpath = mg_rootpath_base + "{}.root".format(masses[i])
-#    pythiapath = pythia_rootpath_base + "{}.root".format(masses[i])
-#    lower_errorbar, upper_errorbar, bins = errorbar_ratioplot(masses[i], mgpath, pythiapath, savefig=savefig)
-#    plot_ratio_errors(lower_errorbar, upper_errorbar, bins, masses[i], savefig=save_errors)
+#    pypath = pythia_rootpath_base + "{}.root".format(masses[i])
+#    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, 'histograms/mg-py_ratio-{}GeV'.format(masses[i]))
 
-### Plot the plus minus ratio errors ###
-#mgpathes = []
-#pythiapathes = []
-#for i in range(len(masses)):
-#    mgpathes.append(mg_rootpath_base + "{}.root".format(masses[i]))
-#    pythiapathes.append(pythia_rootpath_base + "{}.root".format(masses[i]))
-#errorbar_ratio_stackplot(masses, mgpathes, pythiapathes)
+###Fill ratio information to csv###
+cwd = os.getcwd()
+ratio_rootpaths = []
+for mass in masses:
+    ratio_rootpaths.append(cwd + "/histograms/mg-py_ratio-{}GeV.root".format(mass))
+fillcsv(ratio_rootpaths, new_bins)
