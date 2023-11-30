@@ -9,6 +9,7 @@ import pandas as pd
 from ctypes import c_double
 import re
 import sys
+import seaborn
 
 def errorbar_ratioplot(mass, bins, mgpath, pythiapath, outputpath):
     '''
@@ -225,12 +226,54 @@ def plot3D(csvpath, statistic='ratio'):
     plt.show()
 
 
+def heatmap(csvpath, statistic='ratio'):
+    '''
+    :param csvpath: Path to the csv file created in the fillcsv function
+    :param statistic: Statistic to plot on the z-axis. Can be one of four options: 'ratio' (defualt), 'stat', 'sysup', or 'sysdown'.
+                      These are 4 of the columns in the csv. pT and mass are plotted on the x and y axes respectively.
+    :return: Creates a heatmap with the chosen statistic on the color scale, pT on the x-axis, and mass on the y-axis.
+    '''
+    #Check if statistic is an allowed option
+    allowed_options = ['ratio', 'stat', 'sysup', 'sysdown']
+    if statistic not in allowed_options:
+        print("Error: statistic must be one of the four options: 'ratio' (defualt), 'stat', 'sysup', or 'sysdown'.")
+        sys.exit()
+
+    #Clean the data
+    df = pd.read_csv(csvpath)
+    x, y, z_df = list(set(df['pT'])), list(set(df['mass'])), df.groupby('mass')[statistic].apply(list).reset_index()[statistic]
+    l = []
+    for arr in z_df:
+        l.append(arr)
+    z = np.array(l)
+    x.sort()
+    y.sort()
+
+    #Define z axis label
+    if statistic == 'ratio':
+        zlabel = 'MG/Pythia Ratio'
+    elif statistic == 'stat':
+        zlabel = 'Statistical Uncertainty'
+    elif statistic == 'sysup':
+        zlabel = 'Upper Systematic Uncertainty'
+    else:
+        zlabel = 'Lower Systematic Uncertainty'
+
+    #Plot the data
+    ax = seaborn.heatmap(z, cmap='coolwarm', xticklabels=x, yticklabels=y, cbar_kws={'label': zlabel})
+    ax.invert_yaxis()
+    plt.xticks(rotation=45)
+    plt.xlabel('Di-Gluino pT (GeV)')
+    plt.ylabel('Gluino Mass (GeV)')
+    plt.show()
+    #plt.savefig("histograms/" + statistic + "_heatmap.png")
+
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
+cwd = os.getcwd()
 
 ###Plot the ratio plots###
-#cwd = os.getcwd()
 #mg_rootpath_base = cwd + "/output-files/gluglu_MGn50_GeV"
 #pythia_rootpath_base = cwd + "/output-files/pythia-M-"
 #for i in range(len(masses)):
@@ -245,5 +288,5 @@ new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
 #    ratio_rootpaths.append(cwd + "/histograms/mg-py_ratio-{}GeV.root".format(mass))
 #fillcsv(ratio_rootpaths, new_bins)
 
-###Create the 3D plot###
-plot3D(r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\ratio_information.csv", statistic='ratio')
+###Create the heatmap###
+heatmap(cwd + "/ratio_information.csv", statistic='ratio')

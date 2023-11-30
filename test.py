@@ -1,3 +1,5 @@
+import os
+
 from matplotlib import pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import LightSource
@@ -46,10 +48,11 @@ def plot3D(csvpath, statistic='ratio'):
     ax.set_zlabel(zlabel)
     ls = LightSource(270, 45)
     rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode='soft')
-    surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb,
-                           linewidth=0, antialiased=False, shade=False)
+    #surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb,
+    #                       linewidth=0, antialiased=False, shade=False)
+    ax.bar3d(x, y, z, 50, 150, 0.1, zsort='average')
 
     plt.show()
 
-
-plot3D(r"C:\Users\Colby\PycharmProjects\MGP8_ISRStudy_LAdev\ratio_information.csv", statistic='sysdown')
+cwd = os.getcwd()
+plot3D(cwd + "/ratio_information.csv", statistic='ratio')
