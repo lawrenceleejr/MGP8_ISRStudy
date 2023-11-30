@@ -159,7 +159,7 @@ def fillcsv(rootpaths, bins):
     :param bins: Bins used in the ratio plots
     :return: Saves a csv containing the relevant information
     '''
-    dictionary = {'mass': [], 'pT': [], 'ratio': [], 'stat': [], 'sysup': [], 'sysdown': []}
+    dictionary = {'mass': [], 'pT': [], 'ratio': [], 'stat': [], 'sysup': [], 'sysdown': [], 'delta': []}
     for root in rootpaths:
         mass = re.search(r'(\d+)GeV', root).group(1)
         file = ROOT.TFile.Open(root)
@@ -168,12 +168,32 @@ def fillcsv(rootpaths, bins):
         x_values = stathist.GetX()
         y_values = stathist.GetY()
         for bin in range(len(bins)-1):
+            ratio = y_values[bin]
+            sysup = syshist.GetErrorYhigh(bin)
+            sysdown = syshist.GetErrorYlow(bin)
+
             dictionary['mass'].append(mass)
             dictionary['pT'].append(x_values[bin])
-            dictionary['ratio'].append(y_values[bin])
+            dictionary['ratio'].append(ratio)
             dictionary['stat'].append(stathist.GetErrorY(bin))
-            dictionary['sysup'].append(syshist.GetErrorYhigh(bin))
-            dictionary['sysdown'].append(syshist.GetErrorYlow(bin))
+            dictionary['sysup'].append(sysup)
+            dictionary['sysdown'].append(sysdown)
+
+            #Check if the ratio + systematic error encapsulates 1. If so, return delta = 0. Otherwise, return the magnitude of the difference
+            if ratio > 1:
+                delta = ratio - sysdown
+                if delta <= 1:
+                    dictionary['delta'].append(0)
+                else:
+                    dictionary['delta'].append(delta - 1)
+            elif ratio < 1:
+                delta = ratio + sysup
+                if delta >= 1:
+                    dictionary['delta'].append(0)
+                else:
+                    dictionary['delta'].append(1 - delta)
+            else:
+                dictionary['delta'].append(0)
 
     df = pd.DataFrame(dictionary)
     df.to_csv('ratio_information.csv', index=False)
@@ -229,14 +249,14 @@ def plot3D(csvpath, statistic='ratio'):
 def heatmap(csvpath, statistic='ratio'):
     '''
     :param csvpath: Path to the csv file created in the fillcsv function
-    :param statistic: Statistic to plot on the z-axis. Can be one of four options: 'ratio' (defualt), 'stat', 'sysup', or 'sysdown'.
-                      These are 4 of the columns in the csv. pT and mass are plotted on the x and y axes respectively.
+    :param statistic: Statistic to plot on the z-axis. Can be one of four options: 'ratio' (defualt), 'stat', 'sysup', 'sysdown', or 'delta'.
+                      These are 5 of the columns in the csv. pT and mass are plotted on the x and y axes respectively.
     :return: Creates a heatmap with the chosen statistic on the color scale, pT on the x-axis, and mass on the y-axis.
     '''
     #Check if statistic is an allowed option
-    allowed_options = ['ratio', 'stat', 'sysup', 'sysdown']
+    allowed_options = ['ratio', 'stat', 'sysup', 'sysdown', 'delta']
     if statistic not in allowed_options:
-        print("Error: statistic must be one of the four options: 'ratio' (defualt), 'stat', 'sysup', or 'sysdown'.")
+        print("Error: statistic must be one of the five options: 'ratio' (defualt), 'stat', 'sysup', 'sysdown', or 'delta'.")
         sys.exit()
 
     #Clean the data
@@ -256,8 +276,10 @@ def heatmap(csvpath, statistic='ratio'):
         zlabel = 'Statistical Uncertainty'
     elif statistic == 'sysup':
         zlabel = 'Upper Systematic Uncertainty'
-    else:
+    elif statistic == 'sysdown':
         zlabel = 'Lower Systematic Uncertainty'
+    else:
+        zlabel = '|(Ratio + Sigma) - 1|'
 
     #Plot the data
     ax = seaborn.heatmap(z, cmap='coolwarm', xticklabels=x, yticklabels=y, cbar_kws={'label': zlabel})
@@ -282,11 +304,10 @@ cwd = os.getcwd()
 #    errorbar_ratioplot(masses[i], new_bins, mgpath, pypath, 'histograms/mg-py_ratio-{}GeV'.format(masses[i]))
 
 ###Fill ratio information to csv###
-#cwd = os.getcwd()
 #ratio_rootpaths = []
 #for mass in masses:
 #    ratio_rootpaths.append(cwd + "/histograms/mg-py_ratio-{}GeV.root".format(mass))
 #fillcsv(ratio_rootpaths, new_bins)
 
 ###Create the heatmap###
-heatmap(cwd + "/ratio_information.csv", statistic='ratio')
+heatmap(cwd + "/ratio_information.csv", statistic='delta')
