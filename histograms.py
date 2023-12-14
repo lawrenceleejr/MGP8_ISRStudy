@@ -180,20 +180,10 @@ def fillcsv(rootpaths, bins):
             dictionary['sysdown'].append(sysdown)
 
             #Check if the ratio + systematic error encapsulates 1. If so, return delta = 0. Otherwise, return the magnitude of the difference
-            if ratio > 1:
-                delta = ratio - sysdown
-                if delta <= 1:
-                    dictionary['delta'].append(0)
-                else:
-                    dictionary['delta'].append(delta - 1)
-            elif ratio < 1:
-                delta = ratio + sysup
-                if delta >= 1:
-                    dictionary['delta'].append(0)
-                else:
-                    dictionary['delta'].append(1 - delta)
+            if ratio >= 1:
+                dictionary['delta'].append((ratio - 1)/sysdown)
             else:
-                dictionary['delta'].append(0)
+                dictionary['delta'].append((1 - ratio)/sysup)
 
     df = pd.DataFrame(dictionary)
     df.to_csv('ratio_information.csv', index=False)
@@ -279,7 +269,7 @@ def heatmap(csvpath, statistic='ratio'):
     elif statistic == 'sysdown':
         zlabel = 'Lower Systematic Uncertainty'
     else:
-        zlabel = '|(Ratio + Sigma) - 1|'
+        zlabel = 'Sigma Away From 1'
 
     #Plot the data
     ax = seaborn.heatmap(z, cmap='coolwarm', xticklabels=x, yticklabels=y, cbar_kws={'label': zlabel})
