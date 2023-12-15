@@ -280,6 +280,23 @@ def heatmap(csvpath, statistic='ratio'):
     plt.show()
     #plt.savefig("histograms/" + statistic + "_heatmap.png")
 
+def stackplot_ratios(csvpath):
+    '''
+    :param csvpath: Path to the csv file created in the fillcsv function
+    :return: Root file containing the ratio stat plots of each mass on one plot
+    '''
+    df = pd.read_csv(csvpath)
+    masses = df['mass'].unique()
+    for mass in m:
+        subdf = df[df['mass'] == mass]
+        plt.errorbar(subdf['pT'], subdf['ratio'], subdf['stat'], capsize=5, label="{} GeV".format(mass))
+    plt.xlabel('pT (GeV)')
+    plt.ylabel('MG/Pythia')
+    plt.suptitle('All Ratios with Statistical Uncertainties')
+    plt.legend()
+    plt.show()
+
+
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
 new_bins = [0,50,100,150,200,250,300,350,450,550,650,800,950,1150,1450,2800]
@@ -300,4 +317,7 @@ cwd = os.getcwd()
 #fillcsv(ratio_rootpaths, new_bins)
 
 ###Create the heatmap###
-heatmap(cwd + "/ratio_information.csv", statistic='delta')
+#heatmap(cwd + "/ratio_information.csv", statistic='ratio')
+
+###Create the ratio stackplot###
+stackplot_ratios(cwd + "/ratio_information.csv")
