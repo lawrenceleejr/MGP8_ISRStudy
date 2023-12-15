@@ -287,7 +287,7 @@ def stackplot_ratios(csvpath):
     '''
     df = pd.read_csv(csvpath)
     masses = df['mass'].unique()
-    for mass in m:
+    for mass in masses:
         subdf = df[df['mass'] == mass]
         plt.errorbar(subdf['pT'], subdf['ratio'], subdf['stat'], capsize=5, label="{} GeV".format(mass))
     plt.xlabel('pT (GeV)')
