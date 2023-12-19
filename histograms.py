@@ -280,30 +280,51 @@ def heatmap(csvpath, statistic='ratio'):
     plt.show()
     #plt.savefig("histograms/" + statistic + "_heatmap.png")
 
-def stackplot_ratios(csvpath):
+def stackplot_ratios(csvpath, figpath=None, statistical=True, masses=None, error_bands=False):
     '''
     :param csvpath: Path to the csv file created in the fillcsv function
+    :param figpath: Path to save the plot, if None just shows the plot
+    :param statistical: If true, plots the stat errorbars, if false, plots the systematic errorbars
+    :param masses: Allows for plotting of custom masses
+    :param error_bands: If true, plots the error bands
     :return: Root file containing the ratio stat plots of each mass on one plot
     '''
     df = pd.read_csv(csvpath)
-    masses = df['mass'].unique()
-    colors = ['dodgerblue', 'lightskyblue', 'paleturquoise', 'gainsboro', 'peachpuff', 'coral', 'orangered', 'indianred']
-    edgecolors = ['steelblue', 'deepskyblue', 'mediumturquoise', 'silver', 'sandybrown', 'tomato', 'red', 'firebrick']
-    alphas = [0.5, 0.5, 0.75, 0.75, 0.75, 0.75, 0.5, 0.5]
-    i=0
+    if masses == None:
+        masses = df['mass'].unique()
+
+    if statistical:
+        error = 'Statistical'
+    else:
+        error = 'Systematic'
+
+    colors = {1000: 'dodgerblue', 1400: 'lightskyblue', 1600: 'paleturquoise', 1800: 'gainsboro', 2000: 'peachpuff', 2200: 'coral', 2400: 'orangered', 2600: 'indianred'}
+    edgecolors = {1000: 'steelblue', 1400: 'deepskyblue', 1600: 'mediumturquoise', 1800: 'silver', 2000: 'sandybrown', 2200: 'tomato', 2400: 'red', 2600: 'firebrick'}
+    alphas = {1000: 0.5, 1400: 0.5, 1600: 0.75, 1800: 0.75, 2000: 0.75, 2200: 0.75, 2400: 0.5, 2600: 0.5}
     for mass in masses:
         subdf = df[df['mass'] == mass]
-        plt.plot(subdf['pT'], subdf['ratio'], label="{} GeV".format(mass), alpha=0.25, color=colors[i])
-        yplus = np.add(subdf['ratio'], subdf['stat'])
-        yminus = np.subtract(subdf['ratio'], subdf['stat'])
-        plt.fill_between(subdf['pT'], yplus, yminus, alpha=alphas[i], antialiased=True, color=colors[i], edgecolor=edgecolors[i])
-        i+=1
+        if error_bands:
+            plt.plot(subdf['pT'], subdf['ratio'], label="{} GeV".format(mass), alpha=0.25, color=colors[mass])
+            if statistical:
+                yplus = np.add(subdf['ratio'], subdf['stat'])
+                yminus = np.subtract(subdf['ratio'], subdf['stat'])
+            else:
+                yplus = np.add(subdf['ratio'], subdf['sysup'])
+                yminus = np.subtract(subdf['ratio'], subdf['sysdown'])
+            plt.fill_between(subdf['pT'], yplus, yminus, alpha=alphas[mass], antialiased=True, color=colors[mass], edgecolor=edgecolors[mass])
+        else:
+            if statistical:
+                plt.errorbar(subdf['pT'], subdf['ratio'], subdf['stat'], capsize=5, label="{} GeV".format(mass), alpha=0.75, color=colors[mass])
+            else:
+                plt.errorbar(subdf['pT'], subdf['ratio'], (subdf['sysdown'], subdf['sysup']), capsize=5, label="{} GeV".format(mass), alpha=0.75, color=colors[mass])
     plt.xlabel('pT (GeV)')
     plt.ylabel('MG/Pythia')
-    plt.suptitle('All Ratios with Statistical Uncertainties')
+    plt.suptitle('Mass Ratios with {} Uncertainties'.format(error))
     plt.legend()
-    plt.show()
-
+    if figpath == None:
+        plt.show()
+    else:
+        plt.savefig(figpath)
 
 
 masses = [1000, 1400, 1600, 1800, 2000, 2200, 2400, 2600]
@@ -328,4 +349,4 @@ cwd = os.getcwd()
 #heatmap(cwd + "/ratio_information.csv", statistic='ratio')
 
 ###Create the ratio stackplot###
-stackplot_ratios(cwd + "/ratio_information.csv")
+stackplot_ratios(cwd + "/ratio_information.csv", figpath=None, statistical=True, masses=[1000,2600], error_bands=True)
