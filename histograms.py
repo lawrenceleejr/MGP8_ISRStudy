@@ -287,9 +287,17 @@ def stackplot_ratios(csvpath):
     '''
     df = pd.read_csv(csvpath)
     masses = df['mass'].unique()
+    colors = ['dodgerblue', 'lightskyblue', 'paleturquoise', 'gainsboro', 'peachpuff', 'coral', 'orangered', 'indianred']
+    edgecolors = ['steelblue', 'deepskyblue', 'mediumturquoise', 'silver', 'sandybrown', 'tomato', 'red', 'firebrick']
+    alphas = [0.5, 0.5, 0.75, 0.75, 0.75, 0.75, 0.5, 0.5]
+    i=0
     for mass in masses:
         subdf = df[df['mass'] == mass]
-        plt.errorbar(subdf['pT'], subdf['ratio'], subdf['stat'], capsize=5, label="{} GeV".format(mass))
+        plt.plot(subdf['pT'], subdf['ratio'], label="{} GeV".format(mass), alpha=0.25, color=colors[i])
+        yplus = np.add(subdf['ratio'], subdf['stat'])
+        yminus = np.subtract(subdf['ratio'], subdf['stat'])
+        plt.fill_between(subdf['pT'], yplus, yminus, alpha=alphas[i], antialiased=True, color=colors[i], edgecolor=edgecolors[i])
+        i+=1
     plt.xlabel('pT (GeV)')
     plt.ylabel('MG/Pythia')
     plt.suptitle('All Ratios with Statistical Uncertainties')
