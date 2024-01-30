@@ -6,10 +6,13 @@ import sys
 import os
 from DataFormats.FWLite import Events, Handle
 
-#Take arguments from command line
-#Put "root://cmsxrootd.fnal.gov//" before file name
-#inputFiles = sys.argv[1]
-#outputFile = sys.argv[2]
+# Take arguments from command line
+# Put "root://cmsxrootd.fnal.gov//" before file name
+# inputFiles = sys.argv[1]
+# outputFile = sys.argv[2]
+
+# Current best run command
+# python truth.py inputFiles_load=input-files/MGgluino2018_n50.list outputFilename=output-files/test.root targetMass=1000 isAOD=False printEvery=1000 targetStatus=62
 
 # Make VarParsing object
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
@@ -21,21 +24,25 @@ options.register ('outputFilename','',VarParsing.multiplicity.singleton, VarPars
 options.register ('targetMass','',VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetMass")
 options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.varType.bool, "isAOD")
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
+options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
 options.parseArguments()
 outputFilename = options.outputFilename
 targetMass = options.targetMass
-if options.isAOD:
-    targetStatus = 23
-else:
-    targetStatus = 22
-outputfile = ROOT.TFile(options.outputFile, 'RECREATE')
+#if !options.isAOD:
+#   targetStatus = 23
+#   targetStatus = 102
+#else:
+#    targetStatus = 22
+targetStatus = options.targetStatus
 
-debug = False
+outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
+
+#debug = 
 doPrint=False
 print("input=",options.inputFiles)
-print("output=",options.outputFile)
-print(outputFilename, targetMass)
+print("output=",outputFile)
+print(options.outputFilename, targetMass)
 
 
 # Events takes either
@@ -44,7 +51,7 @@ print(outputFilename, targetMass)
 # - VarParsing options
 
 # use Varparsing object
-events = Events (options)
+events = Events(options)
 
 # -bash-4.2$ edmDumpEventContent ../sampleFiles/176F47D3-A514-454B-82D4-019163A330F9.root
 # vector<reco::GenParticle>             "genParticles"              ""                "DIGI2RAW"
@@ -52,16 +59,26 @@ events = Events (options)
 
 
 genparticleLabel = "prunedGenParticles"
+eventinfoLabel = "generator"
 if options.isAOD :
     genparticleLabel = "genParticles"
 # create handle outside of loop
 handles = {}
-handles[genparticleLabel]  = Handle ("std::vector<reco::GenParticle>")
+handles[genparticleLabel]  = Handle("std::vector<reco::GenParticle>")
+handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 
 # for now, label is just a tuple of strings that is initialized just
 # like and edm::InputTag
 
+# Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
+n_weights = 45
+h_gluglu_pT_dict = {}
+for i in range(n_weights):
+    h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}'.format(i),'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
+    h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
+    h_gluglu_pT_dict[i].Sumw2()
 
+h_gluglu_pT_dict = ROOT.TH1F('pTsum', 'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
@@ -96,6 +113,7 @@ Mass2.SetStats(False)
 
 filteredCount = 0
 #set to -1 for all events
+
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
@@ -106,9 +124,11 @@ for ievent,event in enumerate(events):
         doPrint = False
     # use getByLabel, just like in cmsRun
     event.getByLabel (genparticleLabel, handles[genparticleLabel])
+    event.getByLabel(eventinfoLabel, handles[eventinfoLabel])
 
     # get the product
     genparticles = handles[genparticleLabel].product()
+    eventinfo = handles[eventinfoLabel].product()
 
     if doPrint:
         print ("------------------Event", ievent)
@@ -116,22 +136,23 @@ for ievent,event in enumerate(events):
     for igenpart,genpart in enumerate(genparticles):
         status = genpart.status()
         pdgid = genpart.pdgId()
-        mass = -1
-        if options.isAOD:
-            mass = genpart.mass()
-        else:
-            mass = genpart.mass()
-        if abs(pdgid)!=1000006:
+        mass = genpart.mass()
+        if abs(pdgid) != 1000021:
             continue
+        # if doPrint:
+        # #print(status, pdgid)
         if status != targetStatus:
             continue
         if abs(targetMass-mass) >= targetMass*0.1:
             filteredCount += 1
             continue
-        if doPrint:
-            print(status, pdgid)
         gluinop4list.append(genpart.p4())
+
     if len(gluinop4list) == 2:
+        # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
+        for i, weight, in enumerate(eventinfo.weights()):
+            h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weight)
+        # print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
         Phi1.Fill(gluinop4list[0].Phi())
@@ -149,15 +170,15 @@ for ievent,event in enumerate(events):
             print("List is empty.")
     
 
-#output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_LowGeV'+".pdf")
-#c1.SaveAs(output_path)
-#output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_HighGeV'+".pdf")
-#c1.SaveAs(output_path)
-#myFile.WriteObject(h1, "LowGeV")
-#myFile.WriteObject(h2, "HighGeV")
-outputfile.Write()
-outputfile.Close()
-#myFile.Write()
-#myFile.Close()
-#myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
+# output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_LowGeV'+".pdf")
+# c1.SaveAs(output_path)
+# output_path = os.path.expanduser("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/HistogramPDFs/"+outputFilename+'_HighGeV'+".pdf")
+# c1.SaveAs(output_path)
+# myFile.WriteObject(h1, "LowGeV")
+# myFile.WriteObject(h2, "HighGeV")
+outputFile.Write()
+outputFile.Close()
+# myFile.Write()
+# myFile.Close()
+# myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
 print("\n\nEND")
