@@ -1,3 +1,23 @@
-root://cmsxrootd.fnal.gov/Neither X509_USER_PROXY or X509_USER_KEY/X509_USER_CERT are set
-root://cmsxrootd.fnal.gov/In order to run please obtain valid proxy via "voms-proxy-init -voms cms -rfc"
-root://cmsxrootd.fnal.gov/and setup X509_USER_PROXY or setup X509_USER_KEY/X509_USER_CERT in your environment
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/B368654E-FEDF-3E45-A3F8-E9221AD3CCC4.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/51176E6A-8C4F-5A4B-A82D-D5B2D2F13C51.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/AF35E4AD-4252-6745-A284-6D2D692BBA5A.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/69EA17FD-CF5F-C143-A243-8AD8B94B9C9F.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/F0984352-C215-DD40-AA62-6B34335C1F81.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/9E9B0D4D-A60E-6148-A9A8-AD382CFE8101.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/131BEAE6-0DA8-9744-98A5-2B8D35C88784.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/DB1C7A07-E0AC-D847-9F0D-7C2984F87D17.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/57BD20BB-03EE-4F46-8957-B8F61FB33743.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/311D87E1-4E6D-3641-AE67-0290EDE67649.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/9F788A40-49B5-824F-A7D9-3F76180802A7.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/B6758F6E-10A2-794E-BB79-E90E74E12985.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/6CD6E02B-2916-4848-9283-EA5687925068.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/768B31C7-87A6-3249-8723-2C8D7B21FF0D.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/54440ADB-6600-0044-9836-DF2E4AB21D4D.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/AA426F3F-2873-A643-9E56-6D328D895A49.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/C0120348-8F29-F742-B1ED-7239F15B3E03.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/2349223A-0A41-D644-87C6-C695F1A9AD93.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/FE806CC3-6AEA-2B40-BECC-F1C0003BA367.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/28C9A8CA-7819-B04C-92C0-C4BE79CE6BAD.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/54900B92-B1CE-CD4E-9F4E-676D567B8B54.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/05367AEF-4180-5B49-B240-534745370993.root
+root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL18RECO/HSCPpairStau_M-200_TuneCP5_13TeV-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/371963D2-4A03-F444-8ECB-7DEA78C04585.root
