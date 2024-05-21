@@ -1,7 +1,3 @@
-'''NOTE: This was directly copied from alexandersize/MGP8_ISRStudy_LAdev/truth.py on 04/02/24
-In theory, this should be how to run the Pythia samples (needs to be integrated with other version and made nicer)
-'''
-
 #! /usr/bin/env python
 
 from builtins import range
@@ -19,16 +15,22 @@ from DataFormats.FWLite import Events, Handle
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('python')
+print("input=",options.inputFiles)
 #options.outputFile = '/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/'+sys.argv[2]
 #outputFilename = sys.argv[3]
 options.register ('outputFilename','',VarParsing.multiplicity.singleton, VarParsing.varType.string, "outputFilename")
+print("input=",options.inputFiles)
 options.register ('targetMass','',VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetMass")
 options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.varType.bool, "isAOD")
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
 options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
+print("input=",options.inputFiles)
+print("output=",options.outputFilename)
 options.parseArguments()
+print("input=",options.inputFiles)
 outputFilename = options.outputFilename
+print("output=",options.outputFilename)
 targetMass = options.targetMass
 #if !options.isAOD:
 #   targetStatus = 23
@@ -39,7 +41,7 @@ targetStatus = options.targetStatus
 
 outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
-#debug = 
+#debug user given arguments & interpretation
 doPrint=False
 print("input=",options.inputFiles)
 print("output=",outputFile)
@@ -105,12 +107,18 @@ Mass2.GetXaxis().SetTitle('Mass(#tilde{t}2) [GeV]')
 Mass2.SetStats(False)
 #myFile = ROOT.TFile.Open(outputFile+".root", "RECREATE")
 
+#LACEY - Need to print single event somewhere in here
 filteredCount = 0
 #set to -1 for all events
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
         print("Running...")
+	# *** Lacey debug START
+	'''print(event)
+	break
+    print("This should not print")'''
+    # Lacey debug END ***
     if ievent%options.printEvery==0 and options.printEvery > 0:
         doPrint = True
     else:
@@ -176,3 +184,8 @@ outputFile.Close()
 #myFile.Close()
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
 print("\n\nEND")
+
+
+'''NOTE: This was directly copied from alexandersize/MGP8_ISRStudy_LAdev/truth.py on 04/02/24
+In theory, this should be how to run the Pythia samples (needs to be integrated with other version and made nicer)
+'''
