@@ -13,7 +13,7 @@ for str in ${pymass[@]};
 do
 	echo Running truth.py on pythia for targetMass = $str GeV
 	#python truth.py inputFiles_load=input-files/PYgluino2018_M-$str.list outputFilename=output-files/pythia-M-$str.root targetMass=$((str)) isAOD=True printEvery=1000
-	python PYtest_truth.py inputFiles_load='/afs/cern.ch/user/l/ldishman/private/hscp/pythia/CMSSW_10_6_30/StopStau/MGP8_ISRStudy/input-files/PYgmsbStau2018_M-$str.list' outputFilename='/afs/cern.ch/user/l/ldishman/private/hscp/pythia/CMSSW_10_6_30/StopStau/MGP8_ISRStudy/output-files/PYgmsbStau2018_M-$str.root' targetMass=$((str)) isAOD=True printEvery=1000 targetStatus=? # Can't use until I get correct targetStatus!!
+	python PYtest_truth.py inputFiles_load='/afs/cern.ch/user/l/ldishman/private/hscp/pythia/CMSSW_10_6_30/StopStau/MGP8_ISRStudy/input-files/PYgmsbStau2018_M-$str.list' outputFilename='/afs/cern.ch/user/l/ldishman/private/hscp/pythia/CMSSW_10_6_30/StopStau/MGP8_ISRStudy/output-files/PYgmsbStau2018_M-$str.root' targetMass=$((str)) isAOD=True printEvery=1000 targetStatus=1
 done
 
 #for str in ${mgmass[@]};
