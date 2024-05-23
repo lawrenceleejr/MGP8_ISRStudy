@@ -15,22 +15,16 @@ from DataFormats.FWLite import Events, Handle
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideAboutPythonConfigFile#VarParsing_Example
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('python')
-print("input=",options.inputFiles)
 #options.outputFile = '/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/'+sys.argv[2]
 #outputFilename = sys.argv[3]
 options.register ('outputFilename','',VarParsing.multiplicity.singleton, VarParsing.varType.string, "outputFilename")
-print("input=",options.inputFiles)
 options.register ('targetMass','',VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetMass")
 options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.varType.bool, "isAOD")
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
 options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
-print("input=",options.inputFiles)
-print("output=",options.outputFilename)
 options.parseArguments()
-print("input=",options.inputFiles)
 outputFilename = options.outputFilename
-print("output=",options.outputFilename)
 targetMass = options.targetMass
 #if !options.isAOD:
 #   targetStatus = 23
@@ -43,9 +37,6 @@ outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
 #debug user given arguments & interpretation
 doPrint=False
-print("input=",options.inputFiles)
-print("output=",outputFile)
-print(options.outputFilename, targetMass)
 
 
 # Events takes either
@@ -78,9 +69,11 @@ ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root", "RECREATE")
 c1 = ROOT.TCanvas('c1','')
-pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
-pT1 = ROOT.TH1F('pT1','Transverse Momentum of Stop 1;x; Events',100,0,targetMass*1.5)
-pT2 = ROOT.TH1F('pT2','Transverse Momentum of Stop 2;x; Events',100,0,targetMass*1.5)
+#pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
+#pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',100,0,targetMass*1.5)
+pT = ROOT.TH1F('pTsum','pTsum',int(2800/50),0,targetMass*1.5)
+pT1 = ROOT.TH1F('pT1','pT1;x; Events',100,0,targetMass*1.5)
+pT2 = ROOT.TH1F('pT2','pT2;x; Events',100,0,targetMass*1.5)
 pT1.GetXaxis().SetTitle('P_{T}(#tilde{t}1) [GeV]')
 pT1.SetStats(False)
 pT2.GetXaxis().SetTitle('P_{T}(#tilde{t}2) [GeV]')
@@ -107,19 +100,14 @@ Mass2.GetXaxis().SetTitle('Mass(#tilde{t}2) [GeV]')
 Mass2.SetStats(False)
 #myFile = ROOT.TFile.Open(outputFile+".root", "RECREATE")
 
-#LACEY - Need to print single event somewhere in here
+#Begin to loop over events and do actual work
 filteredCount = 0
 #set to -1 for all events
 # loop over events
 for ievent,event in enumerate(events):
     if ievent == 0:
-        print("Running...")
-	# *** Lacey debug START
-	'''print(event)
-	break
-    print("This should not print")'''
-    # Lacey debug END ***
-    if ievent%options.printEvery==0 and options.printEvery > 0:
+        print("Running...") #Just to know that it's started
+    if ievent%options.printEvery==0 and options.printEvery > 0: #To only print at multiples of printEvery
         doPrint = True
     else:
         doPrint = False
@@ -136,12 +124,18 @@ for ievent,event in enumerate(events):
         status = genpart.status()
         pdgid = genpart.pdgId()
 	
+	#print("Status Code: ", status, "\tPDGID:", pdgid)
+
+	#if ievent == 1:
+	'''if (pdgid == 1000015 or pdgid == -1000015): #or pdgid == +-2000015?
+	    print("Status Code: ", status, "PDGID: ", pdgid)'''
+
         mass = -1
         if options.isAOD:
             mass = genpart.mass()
         else:
             mass = genpart.mass()
-        if abs(pdgid)!=1000021:
+        if abs(pdgid)!=1000015: #1000021 for gluinos
             continue
         #if doPrint:
 		#print(status, pdgid)
@@ -154,6 +148,7 @@ for ievent,event in enumerate(events):
     if len(gluinop4list) == 2:
 	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
 	pT.Fill((gluinop4list[0] + gluinop4list[1]).Pt())
+	#pT.Fill((gluinop4list[0].Pt() + gluinop4list[1].Pt()))
 	#print('Di-gluino pt', test)
         pT1.Fill(gluinop4list[0].Pt())
         pT2.Fill(gluinop4list[1].Pt())
