@@ -7,7 +7,7 @@
 #Inf291501
 #pymass=('1800' '2000' '2200' '2400' '2600')
 #mgmass=('1000' '1400' '1600' '1800' '2000' '2200' '2400' '2600')
-pymass=('200' '247' '308' '432' '557' '651' '745' '871' '1029' '1218' '1409')
+pymass=('200' '247' '308' '432' '557' '651' '745' '871' '1029' '1218' '1409' '1599')
 
 for str in ${pymass[@]};
 do
@@ -19,5 +19,5 @@ done
 #for str in ${mgmass[@]};
 #do
 #	echo Running truth.py on madgraph for targetMass = $str GeV
-#	python truth.py inputFiles_load=input-files/MGgluino2018.li#st outputFilename=output-files/gluglu_MG_GeV$str.root targetMass=$((str)) isAOD=False printEvery=100000 targetStatus=62 2>&1 | tee ./text-logs/MG$str.txt
+#	python truth.py inputFiles_load=input-files/MGgluino2018.list outputFilename=output-files/gluglu_MG_GeV$str.root targetMass=$((str)) isAOD=False printEvery=100000 targetStatus=62 2>&1 | tee ./text-logs/MG$str.txt
 #done
