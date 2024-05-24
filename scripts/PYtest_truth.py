@@ -23,6 +23,8 @@ options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.var
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
 options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
+'''for iarg,arg in enumerate(options): #How can I refer to whichever root file inside a .list file is being looked at?
+    print("Running at root file ", iarg)'''
 options.parseArguments()
 outputFilename = options.outputFilename
 targetMass = options.targetMass
@@ -34,6 +36,9 @@ targetMass = options.targetMass
 targetStatus = options.targetStatus
 
 outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
+
+#DEBUG
+
 
 #debug user given arguments & interpretation
 doPrint=False

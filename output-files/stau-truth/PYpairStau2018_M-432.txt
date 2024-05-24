@@ -1,0 +1,293 @@
+Unable to load sec.protocol plugin libXrdSecztn.so
+Unable to load sec.protocol plugin libXrdSecztn.so
+Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] No servers are available to read the file.
+
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+
+Thread 7 (Thread 0x7f47ea7fc700 (LWP 24670)):
+#0  0x00007f4806128e29 in syscall () from /lib64/libc.so.6
+#1  0x00007f47f0ef92ee in XrdSys::LinuxSemaphore::Wait (this=0x53b7850) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x981b578) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x981b560) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00007f47f0ef94d9 in RunRunnerThread (arg=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 6 (Thread 0x7f47eaffd700 (LWP 24669)):
+#0  0x00007f4806128e29 in syscall () from /lib64/libc.so.6
+#1  0x00007f47f0ef92ee in XrdSys::LinuxSemaphore::Wait (this=0x53b7850) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x981b578) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x981b560) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00007f47f0ef94d9 in RunRunnerThread (arg=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x7f47eb7fe700 (LWP 24668)):
+#0  0x00007f4806128e29 in syscall () from /lib64/libc.so.6
+#1  0x00007f47f0ef92ee in XrdSys::LinuxSemaphore::Wait (this=0x53b7850) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdSys/XrdSysLinuxSemaphore.hh:161
+#2  XrdCl::SyncQueue<XrdCl::JobManager::JobHelper>::Get (this=0x981b578) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdCl/XrdClSyncQueue.hh:67
+#3  XrdCl::JobManager::RunJobs (this=0x981b560) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:146
+#4  0x00007f47f0ef94d9 in RunRunnerThread (arg=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClJobManager.cc:33
+#5  0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x7f47ebfff700 (LWP 24667)):
+#0  0x00007f4806b15e9d in nanosleep () from /lib64/libpthread.so.0
+#1  0x00007f47f100dded in XrdSysTimer::Wait (mills=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdSys/XrdSysTimer.cc:239
+#2  0x00007f47f0e9a9a8 in XrdCl::TaskManager::RunTasks (this=0x53bc280) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClTaskManager.cc:244
+#3  0x00007f47f0e9aaf9 in RunRunnerThread (arg=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdCl/XrdClTaskManager.cc:37
+#4  0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x7f47f0e01700 (LWP 24666)):
+#0  0x00007f480612f0e3 in epoll_wait () from /lib64/libc.so.6
+#1  0x00007f47f1012c27 in XrdSys::IOEvents::PollE::Begin (this=0x53c3c60, syncsem=<optimized out>, retcode=<optimized out>, eTxt=<optimized out>) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/./XrdSys/XrdSysIOEventsPollE.icc:213
+#2  0x00007f47f100f505 in XrdSys::IOEvents::BootStrap::Start (parg=0x7ffde852de80) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdSys/XrdSysIOEvents.cc:131
+#3  0x00007f47f100d5e8 in XrdSysThread_Xeq (myargs=0x98175c0) at /data/cmsbld/jenkins/workspace/auto-builds/CMSSW_10_6_14_Pyt8240BugFix-slc7_amd64_gcc700/build/CMSSW_10_6_14_Pyt8240BugFix-build/BUILD/slc7_amd64_gcc700/external/xrootd/4.8.5-pafccj2/xrootd-4.8.5/src/XrdSys/XrdSysPthread.cc:86
+#4  0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x7f47f41ad700 (LWP 24664)):
+#0  0x00007f4806b14b3b in do_futex_wait.constprop () from /lib64/libpthread.so.0
+#1  0x00007f4806b14bcf in __new_sem_wait_slow.constprop.0 () from /lib64/libpthread.so.0
+#2  0x00007f4806b14c6b in sem_wait
+
+GLIBC_2.2.5 () from /lib64/libpthread.so.0
+#3  0x00007f4806e6bcf8 in PyThread_acquire_lock (lock=lock
+entry=0xdfd410, waitflag=waitflag
+entry=1) at Python/thread_pthread.h:324
+#4  0x00007f4806e28286 in PyEval_RestoreThread (tstate=tstate
+entry=0x4157650) at Python/ceval.c:359
+#5  0x00007f4805f5ebd4 in floatsleep (secs=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_6_0_pre4-slc7_amd64_gcc700/build/CMSSW_10_6_0_pre4-build/BUILD/slc7_amd64_gcc700/external/python/2.7.14-pafccj/python-2.7.14/Modules/timemodule.c:1057
+#6  time_sleep (self=<optimized out>, args=<optimized out>) at /build/cmsbld/auto-builds/CMSSW_10_6_0_pre4-slc7_amd64_gcc700/build/CMSSW_10_6_0_pre4-build/BUILD/slc7_amd64_gcc700/external/python/2.7.14-pafccj/python-2.7.14/Modules/timemodule.c:206
+#7  0x00007f4806e31e56 in call_function (oparg=<optimized out>, pp_stack=0x7f47f41ac5d0) at Python/ceval.c:4357
+#8  PyEval_EvalFrameEx (f=f
+entry=0x7f47f66ae9b0, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#9  0x00007f4806e32b68 in PyEval_EvalCodeEx (co=<optimized out>, globals=<optimized out>, locals=locals
+entry=0x0, args=args
+entry=0x7f47f5ebd128, argcount=<optimized out>, kws=kws
+entry=0x7f48070e8068, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#10 0x00007f4806da8dad in function_call (func=0x7f47f66eba28, arg=0x7f47f5ebd110, kw=0x7f47f5ed86e0) at Objects/funcobject.c:523
+#11 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x7f47f66eba28, arg=arg
+entry=0x7f47f5ebd110, kw=kw
+entry=0x7f47f5ed86e0) at Objects/abstract.c:2547
+#12 0x00007f4806e2b479 in ext_do_call (nk=<optimized out>, na=0, flags=<optimized out>, pp_stack=0x7f47f41ac848, func=0x7f47f66eba28) at Python/ceval.c:4671
+#13 PyEval_EvalFrameEx (f=f
+entry=0x7f47f5ee3218, throwflag=throwflag
+entry=0) at Python/ceval.c:3033
+#14 0x00007f4806e31437 in fast_function (nk=<optimized out>, na=<optimized out>, n=1, pp_stack=0x7f47f41ac950, func=<optimized out>) at Python/ceval.c:4442
+#15 call_function (oparg=<optimized out>, pp_stack=0x7f47f41ac950) at Python/ceval.c:4377
+#16 PyEval_EvalFrameEx (f=f
+entry=0x7f47ec000910, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#17 0x00007f4806e31437 in fast_function (nk=<optimized out>, na=<optimized out>, n=1, pp_stack=0x7f47f41aca60, func=<optimized out>) at Python/ceval.c:4442
+#18 call_function (oparg=<optimized out>, pp_stack=0x7f47f41aca60) at Python/ceval.c:4377
+#19 PyEval_EvalFrameEx (f=f
+entry=0x7f47f66c7c90, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#20 0x00007f4806e32b68 in PyEval_EvalCodeEx (co=<optimized out>, globals=<optimized out>, locals=locals
+entry=0x0, args=args
+entry=0x7f47f66d7fe8, argcount=<optimized out>, kws=kws
+entry=0x0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#21 0x00007f4806da8cd9 in function_call (func=0x7f4805f80488, arg=0x7f47f66d7fd0, kw=0x0) at Objects/funcobject.c:523
+#22 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x7f4805f80488, arg=arg
+entry=0x7f47f66d7fd0, kw=kw
+entry=0x0) at Objects/abstract.c:2547
+#23 0x00007f4806d87d1c in instancemethod_call (func=0x7f4805f80488, arg=0x7f47f66d7fd0, kw=0x0) at Objects/classobject.c:2600
+#24 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x7f48048fdd70, arg=arg
+entry=0x7f48070e8050, kw=<optimized out>) at Objects/abstract.c:2547
+#25 0x00007f4806e28937 in PyEval_CallObjectWithKeywords (func=0x7f48048fdd70, arg=0x7f48070e8050, kw=<optimized out>) at Python/ceval.c:4226
+#26 0x00007f4806e71ec2 in t_bootstrap (boot_raw=0x4170080) at ./Modules/threadmodule.c:620
+#27 0x00007f4806b0eea5 in start_thread () from /lib64/libpthread.so.0
+#28 0x00007f480612eb0d in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x7f4807128740 (LWP 24575)):
+#0  0x00007f48060f5659 in waitpid () from /lib64/libc.so.6
+#1  0x00007f4806072f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f4806073311 in system () from /lib64/libc.so.6
+#3  0x00007f480333208d in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/external/slc7_amd64_gcc700/lib/libCore.so
+#4  0x00007f4803334934 in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/external/slc7_amd64_gcc700/lib/libCore.so
+#5  <signal handler called>
+#6  0x00007f47f12fac4f in fwlite::ChainEvent::ChainEvent(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/lib/slc7_amd64_gcc700/libDataFormatsFWLite.so
+#7  0x00007f47f2d68056 in ?? ()
+#8  0x00007f4804898e48 in g_method2callfunc () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#9  0x00007ffde852f060 in ?? ()
+#10 0x0000000009667150 in ?? ()
+#11 0x0000000009667150 in ?? ()
+#12 0x000000000965b780 in ?? ()
+#13 0x00007f47fee5c1c7 in TClingCallFunc::IFacePtr() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/external/slc7_amd64_gcc700/lib/libCling.so
+#14 0x00007f480482fac3 in FastCall(long, void*, void*, void*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#15 0x00007f480483063c in Cppyy::CallConstructor(long, long, void*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#16 0x00007f48048332c8 in PyROOT::TConstructorExecutor::Execute(long, void*, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#17 0x00007f4804856f62 in PyROOT::TMethodHolder::CallSafe(void*, long, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#18 0x00007f4804855f39 in PyROOT::TMethodHolder::Execute(void*, long, PyROOT::TCallContext*) [clone .localalias.88] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#19 0x00007f4804851fc8 in PyROOT::TConstructorHolder::Call(PyROOT::ObjectProxy*&, _object*, _object*, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#20 0x00007f4804839c3a in PyROOT::(anonymous namespace)::mp_call(PyROOT::MethodProxy*, _object*, _object*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#21 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x7f47f1439990, arg=arg
+entry=0x7f47f1439910, kw=kw
+entry=0x0) at Objects/abstract.c:2547
+#22 0x00007f4806de8b32 in slot_tp_init (self=0x7f47f5ef69b0, args=0x7f47f1439910, kwds=0x0) at Objects/typeobject.c:5860
+#23 0x00007f4806de50aa in type_call (type=<optimized out>, args=0x7f47f1439910, kwds=0x0) at Objects/typeobject.c:765
+#24 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x9651060, arg=arg
+entry=0x7f47f1439910, kw=kw
+entry=0x0) at Objects/abstract.c:2547
+#25 0x00007f4806e2a70a in do_call (nk=<optimized out>, na=<optimized out>, pp_stack=0x7ffde852f700, func=<optimized out>) at Python/ceval.c:4574
+#26 call_function (oparg=<optimized out>, pp_stack=0x7ffde852f700) at Python/ceval.c:4379
+#27 PyEval_EvalFrameEx (f=f
+entry=0x7f47f5ecc7b0, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#28 0x00007f4806e32b68 in PyEval_EvalCodeEx (co=<optimized out>, globals=<optimized out>, locals=locals
+entry=0x0, args=<optimized out>, argcount=<optimized out>, kws=0x7f47f5ef2398, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#29 0x00007f4806e2ee59 in fast_function (nk=0, na=<optimized out>, n=<optimized out>, pp_stack=0x7ffde852f8d0, func=<optimized out>) at Python/ceval.c:4452
+#30 call_function (oparg=<optimized out>, pp_stack=0x7ffde852f8d0) at Python/ceval.c:4377
+#31 PyEval_EvalFrameEx (f=f
+entry=0x7f47f5ef2210, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#32 0x00007f4806d9d7d3 in gen_send_ex (gen=0x7f47f142ad20, gen=0x7f47f142ad20, exc=0, arg=0x0) at Objects/genobject.c:85
+#33 gen_iternext (gen=0x7f47f142ad20) at Objects/genobject.c:283
+#34 0x00007f4806d98baf in enum_next (en=0x7f47f142acd0) at Objects/enumobject.c:136
+#35 0x00007f4806e2da7d in PyEval_EvalFrameEx (f=f
+entry=0x7f480704c7b0, throwflag=throwflag
+entry=0) at Python/ceval.c:2813
+#36 0x00007f4806e32b68 in PyEval_EvalCodeEx (co=co
+entry=0x7f48070603b0, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168, args=args
+entry=0x0, argcount=argcount
+entry=0, kws=kws
+entry=0x0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#37 0x00007f4806e32d79 in PyEval_EvalCode (co=co
+entry=0x7f48070603b0, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168) at Python/ceval.c:669
+#38 0x00007f4806e5532a in run_mod (arena=0xb31d00, flags=0x7ffde852fc9c, locals=0x7f48070bf168, globals=0x7f48070bf168, filename=0x7f48070603b0 "\002", mod=<optimized out>) at Python/pythonrun.c:1385
+#39 PyRun_FileExFlags (fp=fp
+entry=0xb75c30, filename=filename
+entry=0x7ffde8531446 "scripts/PYtest_truth.py", start=start
+entry=257, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168, closeit=closeit
+entry=1, flags=0x7ffde852fc9c) at Python/pythonrun.c:1371
+#40 0x00007f4806e57131 in PyRun_SimpleFileExFlags (fp=fp
+entry=0xb75c30, filename=0x7ffde8531446 "scripts/PYtest_truth.py", closeit=closeit
+entry=1, flags=flags
+entry=0x7ffde852fc9c) at Python/pythonrun.c:957
+#41 0x00007f4806e577a3 in PyRun_AnyFileExFlags (fp=fp
+entry=0xb75c30, filename=<optimized out>, closeit=closeit
+entry=1, flags=flags
+entry=0x7ffde852fc9c) at Python/pythonrun.c:761
+#42 0x00007f4806e6fd4e in Py_Main (argc=8, argv=<optimized out>) at Modules/main.c:645
+#43 0x00007f4806052555 in __libc_start_main () from /lib64/libc.so.6
+#44 0x000000000040066e in _start ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#6  0x00007f47f12fac4f in fwlite::ChainEvent::ChainEvent(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/lib/slc7_amd64_gcc700/libDataFormatsFWLite.so
+#7  0x00007f47f2d68056 in ?? ()
+#8  0x00007f4804898e48 in g_method2callfunc () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#9  0x00007ffde852f060 in ?? ()
+#10 0x0000000009667150 in ?? ()
+#11 0x0000000009667150 in ?? ()
+#12 0x000000000965b780 in ?? ()
+#13 0x00007f47fee5c1c7 in TClingCallFunc::IFacePtr() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/external/slc7_amd64_gcc700/lib/libCling.so
+#14 0x00007f480482fac3 in FastCall(long, void*, void*, void*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#15 0x00007f480483063c in Cppyy::CallConstructor(long, long, void*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#16 0x00007f48048332c8 in PyROOT::TConstructorExecutor::Execute(long, void*, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#17 0x00007f4804856f62 in PyROOT::TMethodHolder::CallSafe(void*, long, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#18 0x00007f4804855f39 in PyROOT::TMethodHolder::Execute(void*, long, PyROOT::TCallContext*) [clone .localalias.88] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#19 0x00007f4804851fc8 in PyROOT::TConstructorHolder::Call(PyROOT::ObjectProxy*&, _object*, _object*, PyROOT::TCallContext*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#20 0x00007f4804839c3a in PyROOT::(anonymous namespace)::mp_call(PyROOT::MethodProxy*, _object*, _object*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/lib/libPyROOT.so
+#21 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x7f47f1439990, arg=arg
+entry=0x7f47f1439910, kw=kw
+entry=0x0) at Objects/abstract.c:2547
+#22 0x00007f4806de8b32 in slot_tp_init (self=0x7f47f5ef69b0, args=0x7f47f1439910, kwds=0x0) at Objects/typeobject.c:5860
+#23 0x00007f4806de50aa in type_call (type=<optimized out>, args=0x7f47f1439910, kwds=0x0) at Objects/typeobject.c:765
+#24 0x00007f4806d78f73 in PyObject_Call (func=func
+entry=0x9651060, arg=arg
+entry=0x7f47f1439910, kw=kw
+entry=0x0) at Objects/abstract.c:2547
+#25 0x00007f4806e2a70a in do_call (nk=<optimized out>, na=<optimized out>, pp_stack=0x7ffde852f700, func=<optimized out>) at Python/ceval.c:4574
+#26 call_function (oparg=<optimized out>, pp_stack=0x7ffde852f700) at Python/ceval.c:4379
+#27 PyEval_EvalFrameEx (f=f
+entry=0x7f47f5ecc7b0, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#28 0x00007f4806e32b68 in PyEval_EvalCodeEx (co=<optimized out>, globals=<optimized out>, locals=locals
+entry=0x0, args=<optimized out>, argcount=<optimized out>, kws=0x7f47f5ef2398, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#29 0x00007f4806e2ee59 in fast_function (nk=0, na=<optimized out>, n=<optimized out>, pp_stack=0x7ffde852f8d0, func=<optimized out>) at Python/ceval.c:4452
+#30 call_function (oparg=<optimized out>, pp_stack=0x7ffde852f8d0) at Python/ceval.c:4377
+#31 PyEval_EvalFrameEx (f=f
+entry=0x7f47f5ef2210, throwflag=throwflag
+entry=0) at Python/ceval.c:2994
+#32 0x00007f4806d9d7d3 in gen_send_ex (gen=0x7f47f142ad20, gen=0x7f47f142ad20, exc=0, arg=0x0) at Objects/genobject.c:85
+#33 gen_iternext (gen=0x7f47f142ad20) at Objects/genobject.c:283
+#34 0x00007f4806d98baf in enum_next (en=0x7f47f142acd0) at Objects/enumobject.c:136
+#35 0x00007f4806e2da7d in PyEval_EvalFrameEx (f=f
+entry=0x7f480704c7b0, throwflag=throwflag
+entry=0) at Python/ceval.c:2813
+#36 0x00007f4806e32b68 in PyEval_EvalCodeEx (co=co
+entry=0x7f48070603b0, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168, args=args
+entry=0x0, argcount=argcount
+entry=0, kws=kws
+entry=0x0, kwcount=0, defs=0x0, defcount=0, closure=0x0) at Python/ceval.c:3589
+#37 0x00007f4806e32d79 in PyEval_EvalCode (co=co
+entry=0x7f48070603b0, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168) at Python/ceval.c:669
+#38 0x00007f4806e5532a in run_mod (arena=0xb31d00, flags=0x7ffde852fc9c, locals=0x7f48070bf168, globals=0x7f48070bf168, filename=0x7f48070603b0 "002", mod=<optimized out>) at Python/pythonrun.c:1385
+#39 PyRun_FileExFlags (fp=fp
+entry=0xb75c30, filename=filename
+entry=0x7ffde8531446 "scripts/PYtest_truth.py", start=start
+entry=257, globals=globals
+entry=0x7f48070bf168, locals=locals
+entry=0x7f48070bf168, closeit=closeit
+entry=1, flags=0x7ffde852fc9c) at Python/pythonrun.c:1371
+#40 0x00007f4806e57131 in PyRun_SimpleFileExFlags (fp=fp
+entry=0xb75c30, filename=0x7ffde8531446 "scripts/PYtest_truth.py", closeit=closeit
+entry=1, flags=flags
+entry=0x7ffde852fc9c) at Python/pythonrun.c:957
+#41 0x00007f4806e577a3 in PyRun_AnyFileExFlags (fp=fp
+entry=0xb75c30, filename=<optimized out>, closeit=closeit
+entry=1, flags=flags
+entry=0x7ffde852fc9c) at Python/pythonrun.c:761
+#42 0x00007f4806e6fd4e in Py_Main (argc=8, argv=<optimized out>) at Modules/main.c:645
+#43 0x00007f4806052555 in __libc_start_main () from /lib64/libc.so.6
+#44 0x000000000040066e in _start ()
+===========================================================
+
+
+Traceback (most recent call last):
+  File "scripts/PYtest_truth.py", line 129, in <module>
+    for ievent,event in enumerate(events):
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/python/DataFormats/FWLite/__init__.py", line 664, in _next
+    self._createFWLiteEvent()
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_30/python/DataFormats/FWLite/__init__.py", line 656, in _createFWLiteEvent
+    self._event = ROOT.fwlite.ChainEvent (filenamesSVec)
+TypeError: none of the 2 overloaded methods succeeded. Full details:
+  fwlite::ChainEvent::fwlite::ChainEvent(const vector<string>& iFileNames) =>
+    problem in C++; program state has been reset
+  fwlite::ChainEvent::fwlite::ChainEvent(const fwlite::ChainEvent&) =>
+    could not convert argument 1
