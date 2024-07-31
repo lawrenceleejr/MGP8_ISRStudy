@@ -23,9 +23,11 @@ options.register('isAOD',False,VarParsing.multiplicity.singleton, VarParsing.var
 options.register('printEvery',10000,VarParsing.multiplicity.singleton, VarParsing.varType.int, "printEvery")
 options.register('targetStatus',102, VarParsing.multiplicity.singleton, VarParsing.varType.int, "targetStatus")
 options.maxEvents = -1
-'''for iarg,arg in enumerate(options): #How can I refer to whichever root file inside a .list file is being looked at?
-    print("Running at root file ", iarg)'''
 options.parseArguments()
+'''for iarg,arg in enumerate(options.inputFiles): #This is just telling me I have 1 inputFile (always true)
+					       #Need to know which root file inside inputFile is causing issue
+    print("I have {} input root files".format(len(options.inputFiles)))
+    print("Running at root file {}, and continuing".format(iarg))'''
 outputFilename = options.outputFilename
 targetMass = options.targetMass
 #if !options.isAOD:
@@ -37,8 +39,10 @@ targetStatus = options.targetStatus
 
 outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
-#DEBUG
-
+'''def process_root_file(file_name):
+    try:
+	print("Processing file: {}".format(file_name))
+	events = Events(file_name)'''
 
 #debug user given arguments & interpretation
 doPrint=False
@@ -74,7 +78,7 @@ ROOT.gROOT.SetBatch()        # don't pop up canvases
 ROOT.gROOT.SetStyle('Plain') # white background
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root", "RECREATE")
 c1 = ROOT.TCanvas('c1','')
-#pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
+#pT = ROOT.TH1r('pTsum','Transverse Momentum of Di-gluino sytem',int(2800/50),0,2800)
 #pT = ROOT.TH1F('pTsum','Transverse Momentum of Di-gluino sytem',100,0,targetMass*1.5)
 c1.SetLogy()
 #c1.Update()
@@ -197,7 +201,6 @@ for ievent,event in enumerate(events):
 #myFile.WriteObject(h2, "HighGeV")
 outputFile.Write()
 outputFile.Close()
-#myFile.Write()
 #myFile.Close()
 #myFile = ROOT.TFile.Open("/afs/cern.ch/user/t/twolfe/MGP8_ISRStudy/outputFiles/"+outputFilename+".root")
 print("\n\nEND")

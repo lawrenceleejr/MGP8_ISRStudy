@@ -40,9 +40,9 @@ outputFile = ROOT.TFile(options.outputFilename, 'RECREATE')
 
 #debug = 
 doPrint=False
-print("input=",options.inputFiles)
-print("output=",outputFile)
-print(options.outputFilename, targetMass)
+#print("input=",options.inputFiles)
+#print("output=",outputFile)
+#print(options.outputFilename, targetMass)
 
 
 # Events takes either
@@ -71,14 +71,16 @@ handles[eventinfoLabel] = Handle("GenEventInfoProduct")
 # like and edm::InputTag
 
 # Create a dictionary containing the ROOT histogram information for h_gluglu_pT for different weights
-n_weights = 45
+n_weights = 46
 h_gluglu_pT_dict = {}
+#print(type(h_gluglu_pT_dict))
 for i in range(n_weights):
     h_gluglu_pT_dict[i] = ROOT.TH1F('pTsum {}'.format(i),'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
     h_gluglu_pT_dict[i].GetXaxis().SetTitle('P_{T} [GeV]')
     h_gluglu_pT_dict[i].Sumw2()
 
-h_gluglu_pT_dict = ROOT.TH1F('pTsum', 'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
+#h_gluglu_pT_dict = ROOT.TH1F('pTsum', 'Transverse Momentum of Di-gluino system',int(2800/50),0,2800)
+#print(type(h_gluglu_pT_dict))
 
 # Create histograms, etc.
 ROOT.gROOT.SetBatch()        # don't pop up canvases
@@ -118,6 +120,7 @@ filteredCount = 0
 for ievent,event in enumerate(events):
     if ievent == 0:
         print("Running...")
+        print("I SEE THIS MANY EVENTS: {}".format(len(events)))
     if ievent%options.printEvery==0 and options.printEvery > 0:
         doPrint = True
     else:
@@ -137,7 +140,11 @@ for ievent,event in enumerate(events):
         status = genpart.status()
         pdgid = genpart.pdgId()
         mass = genpart.mass()
-        if abs(pdgid) != 1000021:
+
+	#if abs(pdgid) == 1000015:
+        #    print("Status Code: {}, PDGID: {}, Event: {}, Mass: {}".format(status, pdgid, ievent, mass))
+
+        if abs(pdgid) != 1000015: #1000021:
             continue
         # if doPrint:
         # #print(status, pdgid)
@@ -146,10 +153,12 @@ for ievent,event in enumerate(events):
         if abs(targetMass-mass) >= targetMass*0.1:
             filteredCount += 1
             continue
-        gluinop4list.append(genpart.p4())
+        gluinop4list.append(genpart.p4())	
+	#print("I SEE THIS MANY WEIGHTS: {}".format(len(eventinfo.weights())))
 
     if len(gluinop4list) == 2:
-        # print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
+        #print(type(h_gluglu_pT_dict[i]))
+	#print(type(gluinop4list[0]), gluinop4list[0], gluinop4list[1])
         for i, weight, in enumerate(eventinfo.weights()):
             h_gluglu_pT_dict[i].Fill((gluinop4list[0] + gluinop4list[1]).Pt(), weight)
         # print('Di-gluino pt', test)
